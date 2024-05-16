@@ -92,6 +92,18 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
     });
 });
 
+router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
+  const refreshToken = req.body.refresh_token.trim();
+
+  try {
+    // Verify the token and check if the token exists. Any error will return code 401
+    const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+    
+  } catch (error) {
+    next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+  }
+});
+
 const createToken = (sub, secretKey, expiresIn) => {
   const payload = { iss: "react-test-app", sub: sub };
   return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
