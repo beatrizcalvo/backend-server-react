@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
+const LogsUser = require("../models/logsUserModel");
 
 const NON_SELECTED_FIELDS = "-__v";
 
@@ -12,6 +13,9 @@ const createUser = async function (firstName, lastName, email, password) {
     // Save user data
     const user = User({ email: email, password: password, profileId: "1" });
     const result = await user.save({ session });
+
+    // Save user creation in logs
+    await LogsUser({ email: email, operationType: "A", active: true }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
