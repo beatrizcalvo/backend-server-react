@@ -16,9 +16,11 @@ const startServer = async () => {
 
   // Routes and middlewares dependencies
   const errorHandler = require("./middlewares/errorHandler");
+  const authRoutes = require("./routes/authRoutes");
   const nationalityRoutes = require("./routes/nationalityRoutes");
 
   // Bind App Routes
+  app.use("/auth", authRoutes, errorHandler);
   app.use("/nationalities", nationalityRoutes, errorHandler);
 
   try {
