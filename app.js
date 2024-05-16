@@ -15,13 +15,14 @@ const startServer = async () => {
   app.use(express.json());
 
   // Routes and middlewares dependencies
+  const autenticateHandler = require("./middlewares/autenticateHandler");
   const errorHandler = require("./middlewares/errorHandler");
   const authRoutes = require("./routes/authRoutes");
   const nationalityRoutes = require("./routes/nationalityRoutes");
 
   // Bind App Routes
   app.use("/auth", authRoutes, errorHandler);
-  app.use("/nationalities", nationalityRoutes, errorHandler);
+  app.use("/nationalities", autenticateHandler, nationalityRoutes, errorHandler);
 
   try {
     // DB connections
