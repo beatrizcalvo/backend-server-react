@@ -11,9 +11,8 @@ const LogsUserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a operation type!"]
     },
-    active: {
-      type: Boolean
-    },
+    active: { type: Boolean },
+    firstName: { type: String },
     createdAt: {
       type: Date,
       default: Date.now
