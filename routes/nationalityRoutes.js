@@ -22,6 +22,7 @@ router.get("/", (req, res, next) => {
           });
         })
       };
+      console.log(JSON.stringify(req));
       console.log("GET /nationalities || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
       res.status(200).send(responseBody);
     })
