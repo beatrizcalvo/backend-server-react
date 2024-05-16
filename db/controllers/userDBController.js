@@ -11,7 +11,7 @@ const createUser = async function (firstName, lastName, email, password) {
   session.startTransaction();
   try {
     // Save profile data
-    const role = await Role.findOne({ name: "user", active: true }).exec();
+    const role = await Role.findOne({ code: "01", active: true }).exec();
     const profile = await Profile({ firstName: firstName, lastName: lastName, role: role }).save({ session });
 
     // Save user data
