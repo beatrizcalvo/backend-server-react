@@ -16,10 +16,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    profile: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Profiles",
-      required: [true, "Please provide a profile!"],
+    profileId: {
+      type: String,
+      required: [true, "Please provide a profile ID!"],
     },
   },
   { timestamps: true },
