@@ -15,4 +15,8 @@ const updateToken = function (userId, token) {
   ).lean().exec();
 };
 
-module.exports = { updateToken };
+const findByToken = function (token) {
+  return UserToken.findOne({ token: token }, NON_SELECTED_FIELDS).lean().exec();
+};
+
+module.exports = { updateToken, findByToken };
