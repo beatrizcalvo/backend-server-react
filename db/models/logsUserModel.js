@@ -7,6 +7,10 @@ const LogsUserSchema = new mongoose.Schema(
       lowercase: true, 
       required: [true, "Please provide an email!"]
     },
+    operationType: {
+      type: String,
+      required: [true, "Please provide a operation type!"]
+    },
     active: {
       type: Boolean
     },
