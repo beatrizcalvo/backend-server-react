@@ -8,6 +8,8 @@ const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
 const { loginSchema, registerSchema, refreshSchema } = require("../validators/authValidator");
 
+const userDBController = require("../db/controllers/userDBController");
+
 router.post("/register", validateRequest(registerSchema), (req, res, next) => {
   const firstName = req.body.firstName.trim();
   const lastName = req.body.lastName.trim();
@@ -21,7 +23,13 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
       const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
 
       // Save the new user
-      res.status(201).send({});
+      userDBController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
+        .then(result => {
+          res.status(201).send({});
+        })
+        .catch(error => {
+          next(createHttpError(500, JSON.stringify([errorMessages.AUTH_API_T_0002(error.message.replaceAll('"', "'"))])));
+        });
     })
     .catch(error => {
       next(createHttpError(500, error));
