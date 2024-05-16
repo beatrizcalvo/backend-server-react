@@ -23,3 +23,5 @@ router.get("/me", (req, res, next) => {
       next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
     });
 });
+
+module.exports = router;
