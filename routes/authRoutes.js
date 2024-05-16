@@ -10,6 +10,7 @@ const validateRequest = require("../middlewares/validateRequest");
 const { loginSchema, registerSchema, refreshSchema } = require("../validators/authValidator");
 
 const userDBController = require("../db/controllers/userDBController");
+const userTokenDBController = require("../db/controllers/userTokenDBController");
 
 const ACCESS_TOKEN_EXPIRES_IN = "1h";
 const REFRESH_TOKEN_EXPIRES_IN= "12h";
@@ -35,7 +36,18 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           const refreshToken = createToken(user._id, process.env.REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_EXPIRES_IN);
 
           // Save refresh token in the database
-          
+          userTokenDBController.updateToken(user._id, refreshToken)
+            .then(() => {
+              // Return success response
+              const responseBody = createResponseTokens(accessToken, refreshToken);
+              console.log('POST /auth/login ## Request Body: {"email": "' + email + 
+                            '" ...} || Response Status: 200 ## Response Body: ' + 
+                            JSON.stringify(responseBody));
+              res.status(200).send(responseBody);
+            })
+            .catch(() => {
+              next(createHttpError(500, error));
+            });
         })
         .catch(error => {
           next(createHttpError(500, error));
@@ -82,6 +94,15 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
 const createToken = (sub, secretKey, expiresIn) => {
   const payload = { iss: "react-test-app", sub: sub };
   return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
+};
+
+const createResponseTokens = (accessToken, refreshToken) => {
+  return {
+    access_token: accessToken,
+    refresh_token: refreshToken,
+    token_type: "Bearer",
+    expires_in: "3600"
+  };
 };
 
 module.exports = router;
