@@ -7,7 +7,7 @@ const errorMessages = require("../constants/errorConstants");
 const userDBController = require("../db/controllers/userDBController");
 
 const autenticateHandler = (req, res, next) => {
-  / Get the token from the Authorization header and validate
+  // Get the token from the Authorization header and validate
   const authToken = req.headers.authorization;
   
   if (!authToken || !authToken.toLowerCase().startsWith("bearer ")) 
