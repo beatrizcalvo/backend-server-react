@@ -11,6 +11,41 @@ const { loginSchema, registerSchema, refreshSchema } = require("../validators/au
 
 const userDBController = require("../db/controllers/userDBController");
 
+const ACCESS_TOKEN_EXPIRES_IN = "1h";
+const REFRESH_TOKEN_EXPIRES_IN= "12h";
+
+router.post("/login", validateRequest(loginSchema), (req, res, next) => {
+  const email = req.body.email.toLowerCase();
+  const password = req.body.password;
+
+  // Check if email exists
+  userDBController.findByEmail(email)
+    .then(user => {
+      // Compare the password entered and the hashed password found
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          // Check if password matches
+          if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
+
+          // Check if user is active
+          if (!user.active) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0009()])));
+
+          // Create JWT tokens
+          const accessToken = createToken(user._id, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
+          const refreshToken = createToken(user._id, process.env.REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_EXPIRES_IN);
+
+          // Save refresh token in the database
+          
+        })
+        .catch(error => {
+          next(createHttpError(500, error));
+        });
+    })
+    .catch(() => {
+      next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0005()])));
+    });  
+});
+
 router.post("/register", validateRequest(registerSchema), (req, res, next) => {
   const firstName = req.body.firstName.trim();
   const lastName = req.body.lastName.trim();
@@ -43,5 +78,10 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
       next(createHttpError(500, error));
     });
 });
+
+const createToken = (sub, secretKey, expiresIn) => {
+  const payload = { iss: "react-test-app", sub: sub };
+  return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
+};
 
 module.exports = router;
