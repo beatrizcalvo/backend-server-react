@@ -17,6 +17,10 @@ const LogsUserSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now
+    },
+    createdBy: {
+      type: String,
+      default: "system"
     }
   }
 );
