@@ -1,4 +1,4 @@
-const userResponseDTO = (userDB) => {
+const userResponseDTO = (userDB, profileDB) => {
   return {
     userId: userDB._id
   };
