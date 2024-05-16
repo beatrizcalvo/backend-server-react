@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const RoleSchema = new mongoose.Schema(
   {
-    name: {
+    code: {
       type: String,
       lowercase: true, 
       required: [true, "Please provide a name!"],
