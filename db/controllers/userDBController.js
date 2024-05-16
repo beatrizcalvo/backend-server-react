@@ -10,7 +10,7 @@ const createUser = async function (firstName, lastName, email, password) {
     // Save profile data
 
     // Save user data
-    const user = User({ email: email, password: password, profileId: profile });
+    const user = User({ email: email, password: password, profileId: "1" });
     const result = await user.save({ session });
     
     // Commit the changes
