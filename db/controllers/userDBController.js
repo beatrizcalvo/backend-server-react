@@ -36,7 +36,11 @@ const findByEmail = function (email) {
   return User.findOne({ email: email }, NON_SELECTED_FIELDS).lean().exec();
 };
 
+const findById = function (id) {
+  return User.findById(id, NON_SELECTED_FIELDS).lean().exec();
+};
+
 module.exports = { 
   createUser,
-  findByEmail
+  findByEmail, findById
 };
