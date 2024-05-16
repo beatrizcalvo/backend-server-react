@@ -13,6 +13,7 @@ const LogsUserSchema = new mongoose.Schema(
     },
     active: { type: Boolean },
     firstName: { type: String },
+    lastName: { type: String },
     createdAt: {
       type: Date,
       default: Date.now
