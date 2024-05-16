@@ -32,4 +32,4 @@ const NationalitySchema = new mongoose.Schema(
 const db = mongoose.connection.useDb("reactApp");
 const nationalitiesModel = db.model('nationalities', NationalitySchema);
 
-module.exports =  { nationalitiesModel };
+module.exports =  nationalitiesModel;
