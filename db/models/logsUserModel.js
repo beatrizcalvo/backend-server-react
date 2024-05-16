@@ -7,15 +7,14 @@ const LogsUserSchema = new mongoose.Schema(
       lowercase: true, 
       required: [true, "Please provide an email!"]
     },
-    password: {
-      type: String,
-      required: [true, "Please provide a password!"]
-    },
     active: {
       type: Boolean
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
     }
-  },
-  { timestamps: true }
+  }
 );
 
 // logs_users is collection name
