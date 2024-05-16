@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const LogsUser = require("../models/logsUserModel");
+const Role = require("../models/roleModel");
 
 const NON_SELECTED_FIELDS = "-__v";
 
@@ -9,6 +10,7 @@ const createUser = async function (firstName, lastName, email, password) {
   session.startTransaction();
   try {
     // Save profile data
+    const role = await Role.findOne({ name: "user", active: true }).exec();
 
     // Save user data
     const user = User({ email: email, password: password, profileId: "1" });
