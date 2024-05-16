@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     },
     profileId: {
       type: String,
-      required: [true, "Please provide a profile ID!"],
+      required: [true, "Please provide a profile id!"],
     },
   },
   { timestamps: true },
