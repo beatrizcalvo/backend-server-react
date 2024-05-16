@@ -32,6 +32,11 @@ const createUser = async function (firstName, lastName, email, password) {
   }
 };
 
+const findByEmail = function (email) {
+  return User.findOne({ email: email }, NON_SELECTED_FIELDS).lean().exec();
+};
+
 module.exports = { 
-  createUser
+  createUser,
+  findByEmail
 };
