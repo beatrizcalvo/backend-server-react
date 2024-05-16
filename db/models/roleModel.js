@@ -8,9 +8,7 @@ const RoleSchema = new mongoose.Schema(
       required: [true, "Please provide a name!"],
       unique: [true, "Name already exists!"]
     },
-    description: {
-      type: String
-    },
+    description: { type: String },
     active: {
       type: Boolean,
       default: true
