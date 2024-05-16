@@ -4,6 +4,7 @@ const createHttpError = require('http-errors');
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
