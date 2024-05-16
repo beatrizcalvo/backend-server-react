@@ -14,6 +14,7 @@ const LogsUserSchema = new mongoose.Schema(
     active: { type: Boolean },
     firstName: { type: String },
     lastName: { type: String },
+    role: { type: String },
     createdAt: {
       type: Date,
       default: Date.now
