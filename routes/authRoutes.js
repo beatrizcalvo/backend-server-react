@@ -26,7 +26,14 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
       // Save the new user
       userDBController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
         .then(result => {
-          res.status(201).send({});
+          const responseBody = {
+            id: result._id,
+            email: result.email,
+            createdAt: result.createdAt,
+          };
+          console.log('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + 
+                      '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
+          res.status(201).send(responseBody);
         })
         .catch(error => {
           next(createHttpError(500, JSON.stringify([errorMessages.AUTH_API_T_0002(error.message.replaceAll('"', "'"))])));
