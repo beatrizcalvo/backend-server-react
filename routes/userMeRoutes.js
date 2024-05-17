@@ -24,4 +24,12 @@ router.get("/me", (req, res, next) => {
     });
 });
 
+router.delete("/me", (req, res, next) => {
+  
+});
+
+router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
+  
+});
+
 module.exports = router;
