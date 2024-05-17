@@ -3,6 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const errorMessages = require("../constants/errorConstants");
+const validateRequest = require("../middlewares/validateRequest");
+const { updateSchema } = require("../validators/userValidator");
 
 const userDBController = require("../db/controllers/userDBController");
 const profileDBController = require("../db/controllers/profileDBController");
