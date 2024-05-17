@@ -14,8 +14,8 @@ const UserTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// userstokens is collection name
+// Set database and collection name 
 const authdb = mongoose.connection.useDb("authDB");
-const usersTokensModel = authdb.model("UsersTokens", UserTokenSchema);
+const usersTokensModel = authdb.model("UserToken", UserTokenSchema);
 
-module.exports =  authdb.model.UsersTokens || usersTokensModel;
+module.exports = usersTokensModel;
