@@ -24,4 +24,8 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports =  mongoose.model("User", UserSchema);
+// Set database and collection name 
+const authdb = mongoose.connection.useDb("authDB");
+const usersModel = authdb.model("User", UserSchema);
+
+module.exports = usersModel;
