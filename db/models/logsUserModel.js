@@ -28,6 +28,6 @@ const LogsUserSchema = new mongoose.Schema(
 
 // logs_users is collection name
 const db = mongoose.connection.useDb("reactApp");
-const logsUsersModel = db.model('logs_users', LogsUserSchema);
+const logsUsersModel = db.model("LogsUsers", LogsUserSchema);
 
-module.exports =  logsUsersModel;
+module.exports =  db.model.LogsUsers || logsUsersModel;
