@@ -38,7 +38,8 @@ router.delete("/me", (req, res, next) => {
 });
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
-  
+  console.log(req.body);
+  res.status(204).send();
 });
 
 module.exports = router;
