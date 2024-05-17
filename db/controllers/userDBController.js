@@ -37,7 +37,7 @@ const deleteUser = async function (id) {
     // Delete User, UserToken and Profile
     const userDeleted = await User.findByIdAndDelete(id).lean().exec();
     await UserToken.findOneAndDelete({ userId: userDeleted._id }).exec();
-    await Profile.findByIdAndDelete(userDeleted.profile._id).exec();    
+    await Profile.findByIdAndDelete(userDeleted.profileId).exec();    
     return userDeleted;  
   } catch (error) {
     throw error;
