@@ -7,4 +7,8 @@ const findAllActive = function () {
   return Nationality.find({ active: true }, NON_SELECTED_FIELDS).sort({ description: 1 }).lean().exec();
 };
 
-module.exports = { findAllActive };
+const findByCodeActive = function (code) {
+  return Nationality.find({ code: code, active: true }, NON_SELECTED_FIELDS).lean().exec();
+};
+
+module.exports = { findAllActive, findByCodeActive };
