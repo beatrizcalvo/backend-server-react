@@ -25,7 +25,7 @@ const RoleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// roles is collection name
+// Set database and collection name 
 const appdb = mongoose.connection.useDb("reactApp");
 const rolesModel = appdb.model("Role", RoleSchema);
 
