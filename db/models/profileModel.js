@@ -34,8 +34,8 @@ const ProfileSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// profiles is collection name
-//const db = mongoose.connection.useDb("reactApp");
-//const profilesModel = db.model("Profiles", ProfileSchema);
+// Set database and collection name 
+const appdb = mongoose.connection.useDb("reactApp");
+const profilesModel = appdb.model("Profile", ProfileSchema);
 
-module.exports =  mongoose.model("Profile", ProfileSchema);
+module.exports = profilesModel;
