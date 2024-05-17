@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const Role = require("./roleModel");
-
 const ProfileSchema = new mongoose.Schema(
   {
     firstName: {
