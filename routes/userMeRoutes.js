@@ -15,7 +15,6 @@ router.get("/me", (req, res, next) => {
     .then(user => {
       profileDBController.findByIdPopulated(user.profileId)
         .then(profile => {
-          console.log(profile);
           const responseBody = userResponseDTO(user, profile);
           console.log("GET /users/me || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
           res.status(200).send(responseBody);
