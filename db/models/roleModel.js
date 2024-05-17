@@ -27,6 +27,6 @@ const RoleSchema = new mongoose.Schema(
 
 // roles is collection name
 const db = mongoose.connection.useDb("reactApp");
-const rolesModel = db.model('roles', RoleSchema);
+const rolesModel = db.model("Roles", RoleSchema);
 
-module.exports =  rolesModel;
+module.exports =  db.model.Roles || rolesModel;
