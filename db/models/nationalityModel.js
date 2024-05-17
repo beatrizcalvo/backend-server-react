@@ -28,8 +28,8 @@ const NationalitySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// nationalities is collection name
-const db = mongoose.connection.useDb("reactApp");
-const nationalitiesModel = db.model("Nationalities", NationalitySchema);
+// Set database and collection name 
+const appdb = mongoose.connection.useDb("reactApp");
+const nationalitiesModel = appdb.model("Nationality", NationalitySchema);
 
-module.exports =  db.model.Nationalities || nationalitiesModel;
+module.exports = nationalitiesModel;
