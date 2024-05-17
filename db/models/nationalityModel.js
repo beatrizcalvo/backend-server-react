@@ -30,6 +30,6 @@ const NationalitySchema = new mongoose.Schema(
 
 // nationalities is collection name
 const db = mongoose.connection.useDb("reactApp");
-const nationalitiesModel = db.model('nationalities', NationalitySchema);
+const nationalitiesModel = db.model("Nationalities", NationalitySchema);
 
-module.exports =  nationalitiesModel;
+module.exports =  db.model.Nationalities || nationalitiesModel;
