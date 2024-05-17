@@ -32,6 +32,18 @@ const createUser = async function (firstName, lastName, email, password) {
   }
 };
 
+const deleteUser = async function (id) {
+  try {
+    // Delete User, UserToken and Profile
+    const userDeleted = await User.findByIdAndDelete(id).lean().exec();
+    await UserToken.findOneAndDelete({ userId: userDeleted._id }).exec();
+    await Profile.findByIdAndDelete(userDeleted.profile._id).exec();    
+    return userDeleted;  
+  } catch (error) {
+    throw error;
+  }
+};
+
 const findByEmail = function (email) {
   return User.findOne({ email: email }, NON_SELECTED_FIELDS).lean().exec();
 };
@@ -41,6 +53,6 @@ const findById = function (id) {
 };
 
 module.exports = { 
-  createUser,
+  createUser, deleteUser, 
   findByEmail, findById
 };
