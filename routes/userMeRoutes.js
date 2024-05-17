@@ -27,7 +27,14 @@ router.get("/me", (req, res, next) => {
 });
 
 router.delete("/me", (req, res, next) => {
-  
+  userDBController.deleteUser(req.currentUserId)
+    .then(result => {
+      console.log("DELETE /users/me || Response Status: 204");
+      res.status(204).send();
+    })
+    .catch(error => {
+      next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
+    });
 });
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
