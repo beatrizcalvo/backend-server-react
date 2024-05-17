@@ -25,7 +25,7 @@ const ProfileSchema = new mongoose.Schema(
     },
     role: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Role",
+      ref: "Roles",
       required: [true, "Please provide a role!"],
     }
   },
@@ -34,6 +34,6 @@ const ProfileSchema = new mongoose.Schema(
 
 // profiles is collection name
 const db = mongoose.connection.useDb("reactApp");
-const profilesModel = db.model('profiles', ProfileSchema);
+const profilesModel = db.model("Profiles", ProfileSchema);
 
-module.exports =  profilesModel;
+module.exports =  db.model.Profiles || profilesModel;
