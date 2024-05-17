@@ -21,10 +21,10 @@ const ProfileSchema = new mongoose.Schema(
       type: Date,
       max: new Date() 
     },
-    nationality: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Nationalities"
-    },
+    //nationality: {
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Nationalities"
+    //},
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Roles",
@@ -35,7 +35,7 @@ const ProfileSchema = new mongoose.Schema(
 );
 
 // profiles is collection name
-const db = mongoose.connection.useDb("reactApp");
-const profilesModel = db.model("Profiles", ProfileSchema);
+//const db = mongoose.connection.useDb("reactApp");
+//const profilesModel = db.model("Profiles", ProfileSchema);
 
-module.exports =  db.model.Profiles || profilesModel;
+module.exports =  mongoose.model("Profiles", ProfileSchema);
