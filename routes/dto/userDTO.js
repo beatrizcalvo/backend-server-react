@@ -5,18 +5,17 @@ const userResponseDTO = (userDB, profileDB) => {
     typeDescription: profileDB.role.description,
     person: {
       personName: {
-        firstName: userDB.profile.firstName,
-        lastName: userDB.profile.lastName,
-        secondLastName: userDB.profile.secondLastName,
-        fullName: userDB.profile.firstName + " " + userDB.profile.lastName + 
-          (!!userDB.profile.secondLastName ? (" " + userDB.profile.secondLastName) : ""), 
+        firstName: profileDB.firstName,
+        lastName: profileDB.lastName,
+        secondLastName: profileDB.secondLastName,
+        fullName: profileDB.firstName + " " + profileDB.lastName + (!!profileDB.secondLastName ? (" " + profileDB.secondLastName) : ""), 
       },
-      gender: userDB.profile.gender,
-      birthDate: userDB.profile.birthDate,
-      ...(!!userDB.profile.nationality && {
+      gender: profileDB.gender,
+      birthDate: profileDB.birthDate,
+      ...(!!profileDB.nationality && {
         firstNationality: {
-          code: userDB.profile.nationality.code,
-          description: userDB.profile.nationality.description
+          code: profileDB.nationality.code,
+          description: profileDB.nationality.description
         }
       })
     },   
