@@ -14,21 +14,21 @@ const startServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  // Routes and middlewares dependencies
-  const autenticateHandler = require("./middlewares/autenticateHandler");
-  const errorHandler = require("./middlewares/errorHandler");
-  const authRoutes = require("./routes/authRoutes");
-  const userMeRoutes = require("./routes/userMeRoutes");
-  const nationalityRoutes = require("./routes/nationalityRoutes");
-
-  // Bind App Routes
-  app.use("/auth", authRoutes, errorHandler);
-  app.use("/users", autenticateHandler, userMeRoutes, errorHandler);
-  app.use("/nationalities", autenticateHandler, nationalityRoutes, errorHandler);
-
   try {
     // DB connections
     await mongoose.connect(process.env.DB_URL);
+
+    // Routes and middlewares dependencies
+    const autenticateHandler = require("./middlewares/autenticateHandler");
+    const errorHandler = require("./middlewares/errorHandler");
+    const authRoutes = require("./routes/authRoutes");
+    const userMeRoutes = require("./routes/userMeRoutes");
+    const nationalityRoutes = require("./routes/nationalityRoutes");
+  
+    // Bind App Routes
+    app.use("/auth", authRoutes, errorHandler);
+    app.use("/users", autenticateHandler, userMeRoutes, errorHandler);
+    app.use("/nationalities", autenticateHandler, nationalityRoutes, errorHandler);
 
     // Server configuration
     const server = app.listen(port, () =>
