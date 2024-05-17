@@ -38,4 +38,4 @@ const ProfileSchema = new mongoose.Schema(
 //const db = mongoose.connection.useDb("reactApp");
 //const profilesModel = db.model("Profiles", ProfileSchema);
 
-module.exports =  mongoose.model("Profiles", ProfileSchema);
+module.exports =  mongoose.model("Profile", ProfileSchema);
