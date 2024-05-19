@@ -24,7 +24,7 @@ const ProfileSchema = new mongoose.Schema(
       //ref: "Nationalities"
     //},
     role: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Role",
       required: [true, "Please provide a role!"],
     }
