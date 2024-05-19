@@ -6,7 +6,8 @@ const NON_SELECTED_FIELDS = "-__v";
 const findByIdPopulated = function (id) {
   return Profile.findById(id, NON_SELECTED_FIELDS).populate({
     path: "role",
-    select: "code description"
+    select: "code description",
+    model: Role
   }).lean().exec();
 };
 
