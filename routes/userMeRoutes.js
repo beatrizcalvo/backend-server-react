@@ -38,7 +38,9 @@ router.delete("/me", (req, res, next) => {
 });
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
-  console.log(req.body);
+  // Remove undefined and empty values
+  const cleanedRequest = lodash.pickBy(req.body, lodash.identity);
+  console.log(cleanedRequest);
   res.status(204).send();
 });
 
