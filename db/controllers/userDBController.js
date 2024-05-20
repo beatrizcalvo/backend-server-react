@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
+const UserToken = require("../models/userTokenModel");
 const LogsUser = require("../models/logsUserModel");
 const Profile = require("../models/profileModel");
 const Role = require("../models/roleModel");
@@ -45,6 +46,8 @@ const deleteUser = async function (id) {
     // Delete Profile & LogsUser
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
     console.log("Deleted profile with id=" + userDeleted.profileId);
+    await LogsUser.remove({ email: userDeleted.email }).exec();
+    console.log("Deleted all logsUser with email=" + userDeleted.email);
 
     return userDeleted; 
   } catch (error) {
