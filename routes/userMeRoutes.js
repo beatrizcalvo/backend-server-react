@@ -41,8 +41,8 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     const newUserFields = {
       ...((req.body.active !== null) && { active: req.body.active })
     };
-    console.log(req.body);
     console.log(newUserFields);
+    
     // Check if there are fields to update
     if (Object.keys(newUserFields).length === 0) {
       return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0012()])));
