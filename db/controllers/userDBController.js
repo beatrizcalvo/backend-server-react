@@ -37,11 +37,16 @@ const deleteUser = async function (id) {
   session.startTransaction();
   try {
     // Delete User & UserToken (Login values)
-    const userDeleted = await User.findByIdAndDelete(id).lean().exec();
+    const userDeleted = await User.findByIdAndDelete(id).session(session).lean().exec();
     console.log("Deleted user with id=" + userDeleted._id);
-    console.log(userDeleted);
+    await UserToken.findOneAndDelete({ userId: userDeleted._id }).session(session).exec();
+    console.log("Deleted userToken with userId=" + userDeleted._id);
 
-    
+    // Delete Profile & LogsUser
+    await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
+    console.log("Deleted profile with id=" + userDeleted.profileId);
+
+    return userDeleted; 
   } catch (error) {
     // Rollback any changes made in the database
     await session.abortTransaction();
