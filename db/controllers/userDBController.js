@@ -43,6 +43,13 @@ const updateUser = async function (id, updateFields) {
     // Separate field for update profile and for update user
     const { profile: updateFieldsProfile, ...updateFieldsUser } = updateFields;
 
+    // Find user to update and verify modifications
+    const userToUpdate = await User.findById(id).lean().exec();
+
+    // Update Profile and User
+    const updatedUser = User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+    console.log(updatedUser);
+
     return null;  
   } catch (error) {
     // Rollback any changes made in the database
