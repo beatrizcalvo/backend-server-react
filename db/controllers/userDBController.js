@@ -50,7 +50,9 @@ const updateUser = async function (id, updateFields) {
     const updatedUser = User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
     console.log(updatedUser);
 
-    return null;  
+    // Commit the changes
+    await session.commitTransaction();
+    return updatedUser; 
   } catch (error) {
     // Rollback any changes made in the database
     console.log("Rollback all changes made in the database");
