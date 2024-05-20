@@ -38,6 +38,7 @@ const deleteUser = async function (id) {
     const userDeleted = await User.findByIdAndDelete(id).lean().exec();
     await UserToken.findOneAndDelete({ userId: userDeleted._id }).exec();
     await Profile.findByIdAndDelete(userDeleted.profileId).exec();    
+    await LogsUser.findOneAndDelete({ email: userDeleted.email }).exec();
     return userDeleted;  
   } catch (error) {
     throw error;
