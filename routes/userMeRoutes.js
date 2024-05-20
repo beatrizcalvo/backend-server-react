@@ -52,6 +52,9 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     if (Object.keys(newUserFields).length === 0) {
       return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0012()])));
     }
+
+    // Update user
+    const userUpdated = await userDBController.updateUser(req.currentUserId, newUserFields);
     
     res.status(204).send();
   } catch (error) {
