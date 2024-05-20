@@ -47,7 +47,7 @@ const updateUser = async function (id, updateFields) {
     const userToUpdate = await User.findById(id).lean().exec();
 
     // Update Profile and User
-    const updatedUser = User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+    const updatedUser = await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
     console.log(updatedUser);
 
     // Commit the changes
