@@ -49,7 +49,8 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     }
 
     // Update user
-    const userUpdated = await userDBController.updateUser(req.currentUserId, newUserFields);
+    const result = await userDBController.updateUser(req.currentUserId, newUserFields);
+    console.log(result);
     res.status(204).send();
   } catch (error) {
     next(createHttpError(500, error));
