@@ -38,6 +38,13 @@ const updateUser = async function (id, updateFields) {
   let session = await mongoose.startSession();
   session.startTransaction();
   try {
+    // Separate field for update profile and for update user
+    const { profile: updateFieldsProfile, ...updateFieldsUser } = updateFields;
+
+    // Find user to update
+    const userToUpdate = await User.findById(id).lean().exec();
+    if (!userToUpdate) return null;
+
     
   } catch (error) {
     // Rollback any changes made in the database
