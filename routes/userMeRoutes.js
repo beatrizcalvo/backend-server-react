@@ -39,7 +39,7 @@ router.delete("/me", (req, res, next) => {
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
     const newUserFields = {
-      ...(req.body.active && { active: req.body.active })
+      ...((req.body.active !== null) && { active: req.body.active })
     };
     console.log(req.body);
     console.log(newUserFields);
