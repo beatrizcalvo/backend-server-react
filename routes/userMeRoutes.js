@@ -38,10 +38,15 @@ router.delete("/me", (req, res, next) => {
 });
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
-  // Remove undefined and empty values
-  const cleanedRequest = lodash.pickBy(req.body, lodash.identity);
-  console.log(cleanedRequest);
-  res.status(204).send();
+  try {
+    // Remove undefined and empty values
+    const cleanedRequest = lodash.pickBy(req.body, lodash.identity);
+    
+    console.log(cleanedRequest);
+    res.status(204).send();
+  } catch (error) {
+    next(createHttpError(500, error));
+  }
 });
 
 module.exports = router;
