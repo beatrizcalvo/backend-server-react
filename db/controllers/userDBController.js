@@ -43,20 +43,7 @@ const updateUser = async function (id, updateFields) {
     // Separate field for update profile and for update user
     const { profile: updateFieldsProfile, ...updateFieldsUser } = updateFields;
 
-    // Find user to update
-    const userToUpdate = await User.findById(id).lean().exec();
-    if (!userToUpdate) return null;
-
-    // Update Profile and User
-    const userUpdated = await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
-    const profileUpdated = await Profile.findByIdPopulated(userToUpdate.profileId);
-
-    // Save user update in logs
-    await LogsUser({ email: userUpdated.email, operationType: "M", active: userUpdated.active }).save({ session });
-    
-    // Commit the changes
-    await session.commitTransaction();
-    return userUpdated;    
+    return null;  
   } catch (error) {
     // Rollback any changes made in the database
     console.log("Rollback all changes made in the database");
