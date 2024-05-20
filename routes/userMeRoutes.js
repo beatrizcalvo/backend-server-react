@@ -1,7 +1,6 @@
 const createHttpError = require('http-errors');
 const express = require("express");
 const router = express.Router();
-const lodash = require('lodash');
 
 const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
@@ -41,10 +40,6 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
     // Set update fields
     
-    // Remove undefined and empty values
-    const cleanedRequest = lodash.pickBy(req.body, lodash.identity);
-    
-    console.log(cleanedRequest);
     res.status(204).send();
   } catch (error) {
     next(createHttpError(500, error));
