@@ -26,12 +26,27 @@ const createUser = async function (firstName, lastName, email, password) {
     return result;
   } catch (error) {
     // Rollback any changes made in the database
-    console.debug("Rollback all changes made in the database");
+    console.log("Rollback all changes made in the database");
     await session.abortTransaction();
     throw error;
   } finally {
     session.endSession();
   }
+};
+
+const updateUser = async function (id, updateFields) {
+  let session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    
+  } catch (error) {
+    // Rollback any changes made in the database
+    console.log("Rollback all changes made in the database");
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }  
 };
 
 const deleteUser = async function (id) {
@@ -40,22 +55,22 @@ const deleteUser = async function (id) {
   try {
     // Delete User & UserToken (Login values)
     const userDeleted = await User.findByIdAndDelete(id).session(session).lean().exec();
-    console.debug("Deleted user with id=" + userDeleted._id);
+    console.log("Deleted user with id=" + userDeleted._id);
     await UserToken.findOneAndDelete({ userId: userDeleted._id }).session(session).exec();
-    console.debug("Deleted userToken with userId=" + userDeleted._id);
+    console.log("Deleted userToken with userId=" + userDeleted._id);
 
     // Delete Profile & LogsUser
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
-    console.debug("Deleted profile with id=" + userDeleted.profileId);
+    console.log("Deleted profile with id=" + userDeleted.profileId);
     await LogsUser.deleteMany({ email: userDeleted.email }).session(session).exec();
-    console.debug("Deleted all logsUser with email=" + userDeleted.email);
+    console.log("Deleted all logsUser with email=" + userDeleted.email);
 
     // Commit the changes
     await session.commitTransaction();
     return userDeleted; 
   } catch (error) {
     // Rollback any changes made in the database
-    console.debug("Rollback all changes made in the database");
+    console.log("Rollback all changes made in the database");
     await session.abortTransaction();
     throw error;
   } finally {
@@ -72,6 +87,6 @@ const findById = function (id) {
 };
 
 module.exports = { 
-  createUser, deleteUser, 
+  createUser, updateUser, deleteUser, 
   findByEmail, findById
 };
