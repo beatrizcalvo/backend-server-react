@@ -39,8 +39,12 @@ router.delete("/me", (req, res, next) => {
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
     // Set update fields
+    const newProfileFields = {
+      
+    };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
+      ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
     };
     console.log(newUserFields);
 
