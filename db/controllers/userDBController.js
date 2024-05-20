@@ -33,20 +33,21 @@ const createUser = async function (firstName, lastName, email, password) {
 };
 
 const deleteUser = async function (id) {
+  let session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    // Delete User, UserToken and Profile
+    // Delete User & UserToken (Login values)
     const userDeleted = await User.findByIdAndDelete(id).lean().exec();
     console.log("Deleted user with id=" + userDeleted._id);
     console.log(userDeleted);
-    await UserToken.findOneAndDelete({ userId: userDeleted._id }).exec();
-    console.log("Deleted userToken with userId=" + userDeleted._id);
-    await Profile.findByIdAndDelete(userDeleted.profileId).exec();   
-    console.log("Deleted profile with id=" + userDeleted.profileId);
-    await LogsUser.remove({ email: userDeleted.email }).exec();
-    console.log("Deleted logsUser with email=" + userDeleted.email);
-    return userDeleted;  
+
+    
   } catch (error) {
+    // Rollback any changes made in the database
+    await session.abortTransaction();
     throw error;
+  } finally {
+    session.endSession();
   }
 };
 
