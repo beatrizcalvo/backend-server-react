@@ -39,6 +39,8 @@ router.delete("/me", (req, res, next) => {
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
+    // Set update fields
+    
     // Remove undefined and empty values
     const cleanedRequest = lodash.pickBy(req.body, lodash.identity);
     
