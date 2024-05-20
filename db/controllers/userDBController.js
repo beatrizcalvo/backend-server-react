@@ -39,7 +39,7 @@ const deleteUser = async function (id) {
     // Delete User & UserToken (Login values)
     const userDeleted = await User.findByIdAndDelete(id).session(session).lean().exec();
     console.log("Deleted user with id=" + userDeleted._id);
-    await UserToken.findOneAndDelete({ userId: userDeleted._id }).session(session).exec();
+    await UserToken.findOneAndDelete({ userId: userDeleted._id.toString() }).session(session).exec();
     console.log("Deleted userToken with userId=" + userDeleted._id);
 
     // Delete Profile & LogsUser
