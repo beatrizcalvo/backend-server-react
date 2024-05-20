@@ -38,24 +38,7 @@ router.delete("/me", (req, res, next) => {
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
-    // Set update fields
-    const newProfileFields = {
       
-    };
-    const newUserFields = {
-      ...(req.body.active && { active: req.body.active }),
-      ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
-    };
-    console.log(newUserFields);
-
-    // Check if there are fields to update
-    if (Object.keys(newUserFields).length === 0) {
-      return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0012()])));
-    }
-
-    // Update user
-    const userUpdated = await userDBController.updateUser(req.currentUserId, newUserFields);
-    if (!userUpdated) return next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));    
     res.status(204).send();
   } catch (error) {
     next(createHttpError(500, error));
