@@ -46,7 +46,7 @@ const updateUser = async function (id, updateFields) {
     // Find user to update and verify modifications
     const userToUpdate = await User.findById(id).lean().exec();
     Object.entries(updateFieldsUser).forEach(([key, value]) => {
-      console.log(key + " - " + value);
+      console.log(key + " | newValue: " + value + " oldValue: " + userToUpdate[key]);
     });
 
     // Update Profile and User
