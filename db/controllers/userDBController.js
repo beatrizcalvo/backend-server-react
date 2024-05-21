@@ -51,15 +51,20 @@ const updateUser = async function (id, updateFields) {
 
     // Find user to update, verify modifications and update if needed
     const userToUpdate = await User.findById(id).lean().exec();
-    verifyFieldsModif(updateFieldsUser, userToUpdate);
-    if (Object.keys(updateFieldsUser).length !== 0) {
-      await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
-      console.log("Update user with id=" + userToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsUser)));
-      modifiedCount += Object.keys(updateFieldsUser).length;
+    if (updateFieldsUser !== null) {
+      verifyFieldsModif(updateFieldsUser, userToUpdate);
+      if (Object.keys(updateFieldsUser).length !== 0) {
+        await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+        console.log("Update user with id=" + userToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsUser)));
+        modifiedCount += Object.keys(updateFieldsUser).length;
+      }
     }
 
     // Find profile to update, verify modifications and update if needed
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
+    if (updateFieldsProfile !== null) {
+      
+    }
 
     // Save user update in logs
     if (modifiedCount !== 0) 
