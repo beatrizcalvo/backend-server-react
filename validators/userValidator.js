@@ -9,7 +9,7 @@ const updateSchema = Joi.object({
       secondLastName: Joi.string().allow("").optional()
     },
     gender: Joi.string().valid("Female", "Male").optional(),
-    birthDate: Joi.date().iso().optional(),
+    birthDate: Joi.date().format('YYYY-MM-DD').optional(),
     firstNationality: {
       code: Joi.string().optional()
     }
