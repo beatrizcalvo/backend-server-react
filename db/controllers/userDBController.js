@@ -65,13 +65,15 @@ const updateUser = async function (id, updateFields) {
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
+        await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session).lean().exec();
+        console.log("Update profile with id=" + profileToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
     }
 
     // Save user update in logs
     if (modifiedCount !== 0) {
-      console.log("Añade log");
+      await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active }).save({ session });
     }
 
     // Commit the changes
