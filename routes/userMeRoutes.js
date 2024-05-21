@@ -40,7 +40,9 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
     // Set update fields and remove undefined
     const newProfileFields = {
-      ...(req.body.person?.personName && { ...req.body.person.personName })
+      ...(req.body.person?.personName && { ...req.body.person.personName }),
+      ...(req.body.person?.gender && { gender: req.body.person.gender }),
+      ...(req.body.person?.birthDate && { birthDate: req.body.person.birthDate })
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
