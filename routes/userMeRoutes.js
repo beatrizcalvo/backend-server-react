@@ -38,18 +38,26 @@ router.delete("/me", (req, res, next) => {
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
+    // Check if nationality exits and is active
+    let nationalityId = "";
+    const nationalityCode = req.body.person?.firstNationality?.code;
+    if (nationalityCode) {
+      const nationalityFound = await nationalityDBController.findByCodeActive(nationalityCode);
+      if (nationalityFound.length === 0) return next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0011()])));
+      nationalityId = nationalityFound[0]._id;
+    }
+    
     // Set update fields and remove undefined
     const newProfileFields = {
       ...(req.body.person?.personName && { ...req.body.person.personName }),
       ...(req.body.person?.gender && { gender: req.body.person.gender }),
-      ...(req.body.person?.birthDate && { birthDate: req.body.person.birthDate })
+      ...(req.body.person?.birthDate && { birthDate: req.body.person.birthDate }),
+      ...(nationalityId && { nationality: nationalityId })
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
       ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
     };
-    console.log(req.body);
-    console.log(newUserFields);
     
     // Check if there are fields to update
     if (Object.keys(newUserFields).length === 0) {
