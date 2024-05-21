@@ -9,6 +9,11 @@ const profileDBController = require("./profileDBController");
 
 const NON_SELECTED_FIELDS = "-__v";
 
+// Remove in objFieldsModif fields with equal value in objDB
+const verifyFieldsModif = function (objFieldsModif, objDB) {
+  Object.entries(objFieldsModif).forEach(([key, value]) => value === objDB[key] && delete objFieldsModif[key]);
+};
+
 const createUser = async function (firstName, lastName, email, password) {
   let session = await mongoose.startSession();
   session.startTransaction();
@@ -45,13 +50,15 @@ const updateUser = async function (id, updateFields) {
 
     // Find user to update and verify modifications
     const userToUpdate = await User.findById(id).lean().exec();
-    Object.entries(updateFieldsUser).forEach(([key, value]) => value === userToUpdate[key] && delete updateFieldsUser[key]);
+    verifyFieldsModif(updateFieldsUser, userToUpdate);
+    console.log(updateFieldsUser);
 
     // Find profile to update and verify modifications
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
 
     // Update User
-    if (Object.keys(updateFieldsUser).length !== 0) await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+    if (Object.keys(updateFieldsUser).length !== 0) 
+      await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
 
     // Commit the changes
     await session.commitTransaction();
