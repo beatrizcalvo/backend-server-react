@@ -48,21 +48,23 @@ const updateUser = async function (id, updateFields) {
     // Separate field for update profile and for update user
     const { profile: updateFieldsProfile, ...updateFieldsUser } = updateFields;
 
-    // Find user to update and verify modifications
+    // Find user to update, verify modifications and update if needed
     const userToUpdate = await User.findById(id).lean().exec();
     verifyFieldsModif(updateFieldsUser, userToUpdate);
-    console.log(updateFieldsUser);
+    if (Object.keys(updateFieldsUser).length !== 0) 
+      await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+    let modifiedCount = Object.keys(updateFieldsUser).length;
 
     // Find profile to update and verify modifications
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
 
-    // Update User
-    if (Object.keys(updateFieldsUser).length !== 0) 
-      await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+    // Save user update in logs
+    if (modifiedCount !== 0) 
+      await LogsUser({ email: email, operationType: "M", active: ((updateFieldsUser.active !== null) ? updateFieldsUser.active : userToUpdate.active) });
 
     // Commit the changes
     await session.commitTransaction();
-    return { modifiedCount: Object.keys(updateFieldsUser).length }; 
+    return { modifiedCount: modifiedCount }; 
   } catch (error) {
     // Rollback any changes made in the database
     console.log("Rollback all changes made in the database");
