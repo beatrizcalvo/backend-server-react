@@ -53,26 +53,19 @@ const updateUser = async function (id, updateFields) {
     verifyFieldsModif(updateFieldsUser, userToUpdate);
     if (Object.keys(updateFieldsUser).length !== 0) {
       await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
-      console.log("Update user with id=" + userToUpdate._id + " fields=" + Object.keys(updateFieldsUser));
+      console.log("Update user with id=" + userToUpdate._id + " fields=" + Object.keys(updateFieldsUser).toString());
     }
     
     let modifiedCount = Object.keys(updateFieldsUser).length;
 
     // Find profile to update, verify modifications and update if needed
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
-    verifyFieldsModif(updateFieldsProfile, profileToUpdate);
-    if (Object.keys(updateFieldsProfile).length !== 0) {
-      await Profile.updateOne({ _id: userToUpdate.profileId }, updateFieldsProfile).session(session).lean().exec();
-      console.log("Update profile with id=" + userToUpdate.profileId + " fields=" + Object.keys(updateFieldsProfile));
-    }
 
     modifiedCount += Object.keys(updateFieldsProfile).length;
 
     // Save user update in logs
     if (modifiedCount !== 0) 
-      await LogsUser({ email: userToUpdate.email, operationType: "M", active: (updateFieldsUser.active !== null) ? updateFieldsUser.active : userToUpdate.active, 
-                      firstName: (updateFieldsProfile.firstName !== null) ? updateFieldsProfile.firstName : profileToUpdate.firstName, 
-                      lastName: (updateFieldsProfile.lastName !== null) ? updateFieldsProfile.lastName : profileToUpdate.lastName })
+      await LogsUser({ email: userToUpdate.email, operationType: "M", active: (updateFieldsUser.active !== null) ? updateFieldsUser.active : userToUpdate.active })
         .save({ session });
 
     // Commit the changes
