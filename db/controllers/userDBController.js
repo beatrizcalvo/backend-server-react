@@ -11,7 +11,10 @@ const NON_SELECTED_FIELDS = "-__v";
 
 // Remove in objFieldsModif fields with equal value in objDB
 const verifyFieldsModif = function (objFieldsModif, objDB) {
-  Object.entries(objFieldsModif).forEach(([key, value]) => value === objDB[key] && delete objFieldsModif[key]);
+  Object.entries(objFieldsModif).forEach(([key, value]) => {
+    console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: " + objDB[key];
+    return value === objDB[key] && delete objFieldsModif[key]
+  });
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -65,7 +68,6 @@ const updateUser = async function (id, updateFields) {
     const profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
-      console.log(updateFieldsProfile);
       if (Object.keys(updateFieldsProfile).length !== 0) {
         await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session).lean().exec();
         console.log("Update profile with id=" + profileToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
