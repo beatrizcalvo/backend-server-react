@@ -63,7 +63,7 @@ const updateUser = async function (id, updateFields) {
     // Find profile to update, verify modifications and update if needed
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
     if (updateFieldsProfile !== null) {
-      
+      verifyFieldsModif(updateFieldsProfile, profileToUpdate);
     }
 
     // Save user update in logs
