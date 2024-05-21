@@ -8,6 +8,7 @@ const { updateSchema } = require("../validators/userValidator");
 
 const userDBController = require("../db/controllers/userDBController");
 const profileDBController = require("../db/controllers/profileDBController");
+const nationalityDBController = require("../db/controllers/nationalityDBController");
 const { userResponseDTO } = require("./dto/userDTO");
 
 router.get("/me", (req, res, next) => {
