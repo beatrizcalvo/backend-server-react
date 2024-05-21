@@ -17,6 +17,7 @@ const LogsUserSchema = new mongoose.Schema(
     secondLastName: { type: String },
     gender: { type: String },
     birthDate: { type: Date },
+    firstNationality: { type: String },
     role: { type: String },
     createdAt: {
       type: Date,
