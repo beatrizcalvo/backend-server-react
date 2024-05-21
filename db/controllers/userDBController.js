@@ -13,8 +13,11 @@ const NON_SELECTED_FIELDS = "-__v";
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   const dateFields = ["birthDate"];
   
-  Object.entries(objFieldsModif).forEach(([key, newValue]) => {
-    if (objFieldsModif[key]._id) console.log(key + "es objeto");
+  Object.entries(objFieldsModif).forEach(([key, value]) => {
+    if (objFieldsModif[key]._id) {
+      
+    }
+    const newValue = value;
     const oldValue = dateFields.includes(key) ? new Date(objDB[key]).toISOString().slice(0, 10) : objDB[key];
     newValue === oldValue && delete objFieldsModif[key];
   });
