@@ -16,7 +16,7 @@ router.get("/me", (req, res, next) => {
       profileDBController.findByIdPopulated(user.profileId)
         .then(profile => {
           const responseBody = userResponseDTO(user, profile);
-          console.log("GET /users/me currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
+          console.log("GET /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
           res.status(200).send(responseBody);
         });
     })
@@ -28,7 +28,7 @@ router.get("/me", (req, res, next) => {
 router.delete("/me", (req, res, next) => {
   userDBController.deleteUser(req.currentUserId)
     .then(result => {
-      console.log("DELETE /users/me currentUserId: " + req.currentUserId + " || Response Status: 204");
+      console.log("DELETE /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 204");
       res.status(204).send();
     })
     .catch(error => {
@@ -38,8 +38,13 @@ router.delete("/me", (req, res, next) => {
 
 router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
   try {
+    // Set update fields and remove undefined
+    const newProfileFields = {
+      ...(req.body.person?.personName && { ...req.body.person.personName })
+    };
     const newUserFields = {
       ...((req.body.active !== null) && { active: req.body.active })
+      ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
     };
     console.log(newUserFields);
     
@@ -51,7 +56,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     // Update user
     const result = await userDBController.updateUser(req.currentUserId, newUserFields);
     if (result.modifiedCount === 0) return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0013()])));
-    
+    console.log("PATCH /users/me ## currentUserId: " + req.currentUserId + " ## Request Body: " + JSON.stringify(req.body) + " || Response Status: 204");
     res.status(204).send();
   } catch (error) {
     next(createHttpError(500, error));
