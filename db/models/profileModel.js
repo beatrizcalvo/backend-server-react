@@ -19,7 +19,7 @@ const ProfileSchema = new mongoose.Schema(
       type: Date,
       max: new Date() 
     },
-    nationality: {
+    firstNationality: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Nationality"
     },
