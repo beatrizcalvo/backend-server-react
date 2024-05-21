@@ -43,7 +43,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(req.body.person?.personName && { ...req.body.person.personName })
     };
     const newUserFields = {
-      ...(req.body.active && { active: req.body.active }),
+      ...(req.body.active && req.body.active !== null && { active: req.body.active }),
       ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
     };
     console.log(req.body);
