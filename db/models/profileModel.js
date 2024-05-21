@@ -32,6 +32,11 @@ const ProfileSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Returns a date in 'yyyy-MM-dd' format
+ProfileSchema.methods.formatDate = function(dateProperty) {
+  const newDate = new Date(this[dateProperty]);
+};
+
 // Set database and collection name 
 const appdb = mongoose.connection.useDb("reactApp");
 const profilesModel = appdb.model("Profile", ProfileSchema);
