@@ -52,7 +52,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     const newProfileFields = {
       ...(req.body.person?.personName && { ...req.body.person.personName }),
       ...(req.body.person?.gender && { gender: req.body.person.gender }),
-      ...(req.body.person?.birthDate && { birthDate: req.body.person.birthDate }),
+      ...(req.body.person?.birthDate && { birthDate: req.body.person.birthDate.toISOString().split('T')[0] }),
       ...(nationalityId && { firstNationality: { _id: nationalityId } })
     };
     const newUserFields = {
