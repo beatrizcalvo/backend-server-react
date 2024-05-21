@@ -8,7 +8,7 @@ const findByIdPopulated = function (id) {
   const profileFind = Profile.findById(id, NON_SELECTED_FIELDS).populate([
     { path: "firstNationality", select: "code description", model: Nationality },
     { path: "role", select: "code description", model: Role }
-  ]);
+  ]).exec();
   profileFind.formatDate("birthDate");
   return profileFind;
 };
