@@ -13,7 +13,7 @@ const NON_SELECTED_FIELDS = "-__v";
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
     console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: " + objDB[key]);
-    return value === objDB[key] && delete objFieldsModif[key]
+    return value === objDB[key] && delete objFieldsModif[key];
   });
 };
 
