@@ -67,9 +67,7 @@ const updateUser = async function (id, updateFields) {
     }
 
     // Save user update in logs
-    if (modifiedCount !== 0) 
-      await LogsUser({ email: userToUpdate.email, operationType: "M", active: ((updateFieldsUser?.active !== null) ? updateFieldsUser.active : userToUpdate.active) })
-        .save({ session });
+    console.log(modifiedCount);
 
     // Commit the changes
     await session.commitTransaction();
