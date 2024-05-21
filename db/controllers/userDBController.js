@@ -64,10 +64,15 @@ const updateUser = async function (id, updateFields) {
     const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
+      if (Object.keys(updateFieldsProfile).length !== 0) {
+        modifiedCount += Object.keys(updateFieldsProfile).length;
+      }
     }
 
     // Save user update in logs
-    console.log(modifiedCount);
+    if (modifiedCount !== 0) {
+      console.log("Añade log");
+    }
 
     // Commit the changes
     await session.commitTransaction();
