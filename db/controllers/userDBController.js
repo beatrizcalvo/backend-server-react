@@ -66,8 +66,7 @@ const updateUser = async function (id, updateFields) {
 
     // Find profile to update, verify modifications and update if needed
     const profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
-    profileToUpdate.formatDate("birthDate");
-    console.log(profileToUpdate);
+    console.log((await Profile.findById(userToUpdate.profileId)).formatDate("birthDate"));
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
