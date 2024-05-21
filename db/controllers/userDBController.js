@@ -13,7 +13,6 @@ const NON_SELECTED_FIELDS = "-__v";
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
     console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: " + objDB[key]);
-    console.log(typeof objDB[key].instance);
     value === objDB[key] && delete objFieldsModif[key];
   });
 };
@@ -67,6 +66,7 @@ const updateUser = async function (id, updateFields) {
 
     // Find profile to update, verify modifications and update if needed
     const profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
+    console.log(profileToUpdate);
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
