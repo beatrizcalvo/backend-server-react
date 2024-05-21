@@ -62,7 +62,7 @@ const updateUser = async function (id, updateFields) {
     }
 
     // Find profile to update, verify modifications and update if needed
-    const profileToUpdate = await Profile.findById(userToUpdate.profileId).lean().exec();
+    const profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId).lean().exec();
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
@@ -72,15 +72,12 @@ const updateUser = async function (id, updateFields) {
       }
     }
 
-    // Find role to update
-    const roleToUpdate = await Role.findById(profileToUpdate.role._id).lean().exec();
-
     // Save user update in logs
     if (modifiedCount !== 0) {
       await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active, firstName: updateFieldsProfile?.firstName || profileToUpdate.firstName, 
                       lastName: updateFieldsProfile?.lastName || profileToUpdate.lastName, secondLastName: updateFieldsProfile?.secondLastName || profileToUpdate.secondLastName, 
                       gender: updateFieldsProfile?.gender || profileToUpdate.gender, birthDate: updateFieldsProfile?.birthDate || profileToUpdate.birthDate, 
-                      firstNationality: updateFieldsProfile?.firstNationality || profileToUpdate.firstNationality, role: roleToUpdate.code })
+                      firstNationality: "", role: profileToUpdate.role.code })
         .save({ session });
     }
 
