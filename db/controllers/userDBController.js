@@ -12,7 +12,7 @@ const NON_SELECTED_FIELDS = "-__v";
 // Remove in objFieldsModif fields with equal value in objDB
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
-    console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: ");
+    console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: " + objDB[key]);
     value === objDB[key] && delete objFieldsModif[key];
   });
 };
