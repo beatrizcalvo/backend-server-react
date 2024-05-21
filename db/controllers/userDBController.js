@@ -11,9 +11,10 @@ const NON_SELECTED_FIELDS = "-__v";
 
 // Remove in objFieldsModif fields with equal value in objDB
 const verifyFieldsModif = function (objFieldsModif, objDB) {
+  const dateFields = ["birthDate"];
+  
   Object.entries(objFieldsModif).forEach(([key, value]) => {
-    console.log(typeof objFieldsModif[key]);
-    console.log(key + " newValue: " + objFieldsModif[key] + " oldValue: " + objDB[key]);
+    if (dateFields.includes(key)) console.log(new Date(objDB[key]).toISOString().slice(0, 10));
     value === objDB[key] && delete objFieldsModif[key];
   });
 };
