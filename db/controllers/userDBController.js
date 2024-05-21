@@ -26,7 +26,8 @@ const createUser = async function (firstName, lastName, email, password) {
     const result = await User({ email: email, password: password, profileId: profile._id }).save({ session });
 
     // Save user creation in logs
-    await LogsUser({ email: email, operationType: "A", active: true, firstName: firstName, lastName: lastName, role: role.code }).save({ session });
+    await LogsUser({ email: email, operationType: "A", active: true, firstName: firstName, lastName: lastName, secondLastName: "", 
+                    gender: "", birthDate: "", firstNationality: "", role: role.code }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
@@ -78,7 +79,8 @@ const updateUser = async function (id, updateFields) {
     if (modifiedCount !== 0) {
       await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active, firstName: updateFieldsProfile?.firstName || profileToUpdate.firstName, 
                       lastName: updateFieldsProfile?.lastName || profileToUpdate.lastName, secondLastName: updateFieldsProfile?.secondLastName || profileToUpdate.secondLastName, 
-                      gender: updateFieldsProfile?.gender || profileToUpdate.gender, birthDate: updateFieldsProfile?.birthDate || profileToUpdate.birthDate, role: roleToUpdate.code })
+                      gender: updateFieldsProfile?.gender || profileToUpdate.gender, birthDate: updateFieldsProfile?.birthDate || profileToUpdate.birthDate, 
+                      firstNationality: updateFieldsProfile?.firstNationality || profileToUpdate.firstNationality, role: roleToUpdate.code })
         .save({ session });
     }
 
