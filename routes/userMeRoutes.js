@@ -16,7 +16,7 @@ router.get("/me", (req, res, next) => {
       profileDBController.findByIdPopulated(user.profileId)
         .then(profile => {
           const responseBody = userResponseDTO(user, profile);
-          console.log("GET /users/me || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
+          console.log("GET /users/me currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
           res.status(200).send(responseBody);
         });
     })
@@ -28,7 +28,7 @@ router.get("/me", (req, res, next) => {
 router.delete("/me", (req, res, next) => {
   userDBController.deleteUser(req.currentUserId)
     .then(result => {
-      console.log("DELETE /users/me || Response Status: 204");
+      console.log("DELETE /users/me currentUserId: " + req.currentUserId + " || Response Status: 204");
       res.status(204).send();
     })
     .catch(error => {
@@ -50,7 +50,8 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
 
     // Update user
     const result = await userDBController.updateUser(req.currentUserId, newUserFields);
-    console.log(result);
+    if (result.modifiedCount === 0) return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0013()])));
+    
     res.status(204).send();
   } catch (error) {
     next(createHttpError(500, error));
