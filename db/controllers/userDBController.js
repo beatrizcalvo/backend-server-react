@@ -53,8 +53,9 @@ const updateUser = async function (id, updateFields) {
     verifyFieldsModif(updateFieldsUser, userToUpdate);
     if (Object.keys(updateFieldsUser).length !== 0) {
       await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
-      console.log(Object.keys(updateFieldsUser));
+      console.log("Update user with id=" + userToUpdate._id + " fields=" + Object.keys(updateFieldsUser));
     }
+    
     let modifiedCount = Object.keys(updateFieldsUser).length;
 
     // Find profile to update and verify modifications
@@ -62,7 +63,7 @@ const updateUser = async function (id, updateFields) {
 
     // Save user update in logs
     if (modifiedCount !== 0) 
-      await LogsUser({ email: userToUpdate.email, operationType: "M", active: ((updateFieldsUser.active !== null) ? updateFieldsUser.active : userToUpdate.active) });
+      await LogsUser({ email: userToUpdate.email, operationType: "M", active: ((updateFieldsUser.active !== null) ? updateFieldsUser.active : userToUpdate.active) }).save({ session });
 
     // Commit the changes
     await session.commitTransaction();
