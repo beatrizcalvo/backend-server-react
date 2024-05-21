@@ -71,9 +71,15 @@ const updateUser = async function (id, updateFields) {
       }
     }
 
+    // Find role to update
+    const roleToUpdate = await Role.findById(profileToUpdate.role._id).lean().exec();
+
     // Save user update in logs
     if (modifiedCount !== 0) {
-      await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active }).save({ session });
+      await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active, firstName: updateFieldsProfile?.firstName || profileToUpdate.firstName, 
+                      lastName: updateFieldsProfile?.lastName || profileToUpdate.lastName, secondLastName: updateFieldsProfile?.secondLastName || profileToUpdate.secondLastName, 
+                      gender: updateFieldsProfile?.gender || profileToUpdate.gender, role: roleToUpdate.code })
+        .save({ session });
     }
 
     // Commit the changes
