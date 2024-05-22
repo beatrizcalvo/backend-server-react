@@ -15,7 +15,8 @@ const userResponseDTO = (userDB, profileDB) => {
       ...(!!profileDB.firstNationality && {
         firstNationality: {
           code: profileDB.firstNationality.code,
-          description: profileDB.firstNationality.description
+          description: profileDB.firstNationality.description,
+          country: profileDB.firstNationality.country
         }
       })
     },   
