@@ -12,12 +12,11 @@ const NON_SELECTED_FIELDS = "-__v";
 // Remove in objFieldsModif fields with equal value in objDB
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
-    const newValue = ((Object.prototype.toString.call(value) === "[object Object]") && value._id.toString()) || value;
-    console.log(newValue);
-    const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && new Date(objDB[key])) 
+    const newValue = ((Object.prototype.toString.call(value) === "[object Object]") && value._id.toString()) 
+      || value;
+    const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && new Date(objDB[key]).toISOString().slice(0, 10)) 
       || ((Object.prototype.toString.call(objDB[key]) === "[object Object]") && objDB[key]._id.toString())
       || objDB[key];
-    console.log(oldValue);
     newValue === oldValue && delete objFieldsModif[key];
   });
 };
