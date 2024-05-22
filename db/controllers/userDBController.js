@@ -16,7 +16,8 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
     console.log(Object.prototype.toString.call(objDB[key]));
     const newValue = value;
-    const oldValue = dateFields.includes(key) ? new Date(objDB[key]).toISOString().slice(0, 10) : objDB[key];
+    const oldValue = objDB[key];
+    //const oldValue = dateFields.includes(key) ? new Date(objDB[key]).toISOString().slice(0, 10) : objDB[key];
     newValue === oldValue && delete objFieldsModif[key];
   });
 };
