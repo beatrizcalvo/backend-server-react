@@ -38,6 +38,7 @@ const createValidationErrors = function (error) {
       case "any.only":
         listErrors.push(errorMessages.AUTH_API_F_0010(field, err.context.valids.join(", ")));
         break;
+      case "array.base":
       case "date.base":
       case "date.format": 
       case "string.base":
