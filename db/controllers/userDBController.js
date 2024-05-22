@@ -85,7 +85,7 @@ const updateUser = async function (id, updateFields) {
       await LogsUser({ email: userToUpdate.email, operationType: "M", active: updateFieldsUser?.active || userToUpdate.active, firstName: updateFieldsProfile?.firstName || profileToUpdate.firstName, 
                       lastName: updateFieldsProfile?.lastName || profileToUpdate.lastName, secondLastName: updateFieldsProfile?.secondLastName || profileToUpdate.secondLastName, 
                       gender: updateFieldsProfile?.gender || profileToUpdate.gender, birthDate: updateFieldsProfile?.birthDate || profileToUpdate.birthDate, 
-                      firstNationality: "", role: profileToUpdate.role.code })
+                      firstNationality: updateFieldsProfile?.firstNationality?.code || profileToUpdate.firstNationality.code, role: profileToUpdate.role.code })
         .save({ session });
     }
 
