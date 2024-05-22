@@ -18,7 +18,8 @@ router.get("/", (req, res, next) => {
           return({
             nationalityId: nationality._id,
             nationalityCode: nationality.code,
-            nationalityDescription: nationality.description
+            nationalityDescription: nationality.description,
+            nationalityCountry: nationality.country
           });
         })
       };
