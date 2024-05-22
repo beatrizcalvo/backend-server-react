@@ -12,10 +12,10 @@ const userResponseDTO = (userDB, profileDB) => {
       },
       gender: profileDB.gender,
       birthDate: profileDB.birthDate,
-      ...(!!profileDB.nationality && {
+      ...(!!profileDB.firstNationality && {
         firstNationality: {
-          code: profileDB.nationality.code,
-          description: profileDB.nationality.description
+          code: profileDB.firstNationality.code,
+          description: profileDB.firstNationality.description
         }
       })
     },   
