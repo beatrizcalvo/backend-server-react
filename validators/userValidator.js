@@ -13,6 +13,16 @@ const updateSchema = Joi.object({
     firstNationality: {
       code: Joi.string().optional()
     }
+  },
+  contactPoint: {
+    postalAddress: {
+      addressLines: Joi.array().items(Joi.string().min(10)).max(2).optional(),
+      city: Joi.string().optional(),
+      zipCode: Joi.string().min(5).max(9).optional(),
+      country: {
+        code: Joi.string().optional()
+      }
+    }
   }
 });
 
