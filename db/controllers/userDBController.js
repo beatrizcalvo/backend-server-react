@@ -14,7 +14,7 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   const dateFields = ["birthDate"];
   
   Object.entries(objFieldsModif).forEach(([key, value]) => {
-    console.log(Object.prototype.toString.call(objDB[key]));
+    console.log(Object.prototype.toString.call(objFieldsModif[key]));
     const newValue = value;
     console.log(newValue);
     const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && new Date(objDB[key]).toISOString().slice(0, 10)) 
