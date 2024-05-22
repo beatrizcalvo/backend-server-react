@@ -14,11 +14,10 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   const dateFields = ["birthDate"];
   
   Object.entries(objFieldsModif).forEach(([key, value]) => {
-    console.log(Object.prototype.toString.call(objFieldsModif[key]));
-    const newValue = value;
+    const newValue = ((Object.prototype.toString.call(value) === "[object Object]") && value._id) || value;
     console.log(newValue);
     const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && new Date(objDB[key]).toISOString().slice(0, 10)) 
-      || objDB[key];
+      || ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && objDB[key]._id)|| objDB[key];
     console.log(oldValue);
     newValue === oldValue && delete objFieldsModif[key];
   });
