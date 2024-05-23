@@ -29,8 +29,8 @@ const fieldsCSVProfiles = [
 
 // Generate a CSV register associated with the data
 const generateCSV = function (fields, data) {
-  const json2csv = new Parser({ fields: fields, delimiter: "#" });
-  return json2csv.parse(data).toString();
+  const json2csv = new Parser({ fields: fields, delimiter: "#", header: false });
+  return json2csv.parse(data);
 };
 
 const createUser = async function (firstName, lastName, email, password) {
