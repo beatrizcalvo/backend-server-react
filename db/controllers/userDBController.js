@@ -113,7 +113,7 @@ const deleteUser = async function (id) {
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
     console.log("Deleted profile with id=" + userDeleted.profileId);
     await LogsUser.deleteMany({ userEmail: userDeleted.email }).session(session).exec();
-    console.log("Deleted all logsUser with email=" + userDeleted.email);
+    console.log("Deleted all logsUser with userEmail=" + userDeleted.email);
 
     // Commit the changes
     await session.commitTransaction();
