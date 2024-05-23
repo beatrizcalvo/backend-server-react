@@ -43,8 +43,7 @@ const createUser = async function (firstName, lastName, email, password) {
     const newUser = await User({ email: email, password: password, profileId: newProfile._id }).save({ session });
 
     // Save user creation in logs
-    console.log(generateCSV(fieldsCSVProfiles, newProfile));
-    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01" }).save({ session });
+    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateCSV(fieldsCSVProfiles, newProfile) }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
