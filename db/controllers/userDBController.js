@@ -23,7 +23,8 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 // Generate a CSV register associated with the data
 const generateCSV = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "");
+  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.bithDate && new Date(data.birthDate).toISOString().slice(0, 10)) || "") + 
+    "#";
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -33,7 +34,9 @@ const createUser = async function (firstName, lastName, email, password) {
     // Save user and profile data
     const roleFind = await Role.findOne({ code: "01", active: true }).exec();
     const newProfile = await Profile({ firstName: firstName, lastName: lastName, role: roleFind }).save({ session });
+    console.log("Created profile with id=" + newProfile._id);
     const newUser = await User({ email: email, password: password, profileId: newProfile._id }).save({ session });
+    console.log("Created user with id=" + newUser._id);
 
     // Save user creation in logs
     await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateCSV(newProfile) }).save({ session });
