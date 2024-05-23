@@ -30,7 +30,7 @@ const fieldsCSVProfiles = [
 // Generate a CSV register associated with the data
 const generateCSV = function (fields, data) {
   const json2csv = new Parser({ fields });
-  return json2csv.parse(data);
+  return json2csv.parse(data)[1];
 };
 
 const createUser = async function (firstName, lastName, email, password) {
