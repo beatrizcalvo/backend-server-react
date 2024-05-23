@@ -84,9 +84,10 @@ const updateUser = async function (id, updateFields) {
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
-        const updatedProfile = await Profile.findByIdAndUpdate(profileToUpdate._id, updateFieldsProfile, { new: true }).session(session);
-        console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
+        await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session);
+        console.log("Update profile with id=" + profileToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         // Save user update in logs
+        const updatedProfile = await profileDBController.findByIdPopulated(profileToUpdate._id);
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData(profileToUpdate), dataNext: generateRegData(updatedProfile) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id);
         modifiedCount += Object.keys(updateFieldsProfile).length;
