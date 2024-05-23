@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ContactPointSchema = new mongoose.Schema(
+const PostalAddressSchema = new mongoose.Schema(
   {
     addressLine1: {
       type: String,
@@ -13,6 +13,6 @@ const ContactPointSchema = new mongoose.Schema(
 
 // Set database and collection name 
 const appdb = mongoose.connection.useDb("reactApp");
-const contactPointsModel = appdb.model("ContactPoint", ContactPointSchema);
+const postalAddressesModel = appdb.model("PostaAddress", ContactPointSchema);
 
-module.exports = contactPointsModel;
+module.exports = postalAddressesModel;
