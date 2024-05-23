@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
 const ContactPointSchema = new mongoose.Schema(
-  {},
+  {
+    addressLine1: {
+      type: String,
+      required: [true, "Please provide an address line 1!"],
+    },
+    addressLine2: { type: String }
+  },
   { timestamps: true }
 );
 
