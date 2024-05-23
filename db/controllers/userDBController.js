@@ -87,7 +87,7 @@ const updateUser = async function (id, updateFields) {
         const updatedProfile = await Profile.findByIdAndUpdate(profileToUpdate._id, updateFieldsProfile, { new: true }).session(session);
         console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         // Save user update in logs
-        const newLogsUser = await LogsUser({ userEmail: email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData(profileToUpdate), dataNext: generateRegData(updatedProfile) }).save({ session });
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData(profileToUpdate), dataNext: generateRegData(updatedProfile) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id);
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
