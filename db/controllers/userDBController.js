@@ -9,12 +9,17 @@ const profileDBController = require("./profileDBController");
 
 const NON_SELECTED_FIELDS = "-__v";
 
+// Format date to yyyy-MM-dd
+const formatDate = function (dateString) {
+  return new Date(dateString).toISOString().slice(0, 10);
+};
+
 // Remove in objFieldsModif fields with equal value in objDB
 const verifyFieldsModif = function (objFieldsModif, objDB) {
   Object.entries(objFieldsModif).forEach(([key, value]) => {
     const newValue = ((Object.prototype.toString.call(value) === "[object Object]") && value._id.toString()) 
       || value;
-    const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && new Date(objDB[key]).toISOString().slice(0, 10)) 
+    const oldValue = ((Object.prototype.toString.call(objDB[key]) === "[object Date]") && formatDate(objDB[key])) 
       || ((Object.prototype.toString.call(objDB[key]) === "[object Object]") && objDB[key]._id.toString())
       || objDB[key];
     newValue === oldValue && delete objFieldsModif[key];
@@ -23,8 +28,8 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 // Generate a CSV register associated with the data
 const generateCSV = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.birthDate && new Date(data.birthDate).toISOString().slice(0, 10) || "") + 
-    "#" + (data.firstNationality.description || "") + "#" + (data.role.code || "");
+  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.birthDate && formatDate(data.birthDate) || "") + 
+    "#" + (data.firstNationality?.description || "") + "#" + data.role.code;
 };
 
 const createUser = async function (firstName, lastName, email, password) {
