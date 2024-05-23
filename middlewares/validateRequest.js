@@ -18,6 +18,7 @@ const validateRequest = (schema) => function (req, res, next) {
 };
 
 const trimObjValues = function (obj) {
+  console.log(typeof obj);
   if ((typeof obj) === "string") return obj.trim();
   if ((typeof obj) === "object") 
     return Object.fromEntries(Object.keys(obj).map(key => [key, trimObjValues(obj[key])]));
