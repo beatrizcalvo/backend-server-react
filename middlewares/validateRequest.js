@@ -18,10 +18,11 @@ const validateRequest = (schema) => function (req, res, next) {
 };
 
 const trimObjValues = function (obj) {
-  console.log(Object.prototype.toString.call(obj));
-  if ((typeof obj) === "string") return obj.trim();
-  if ((typeof obj) === "object") 
+  if (Object.prototype.toString.call(obj) === "[object String]") return obj.trim();
+  if (Object.prototype.toString.call(obj) === "[object Object]") 
     return Object.fromEntries(Object.keys(obj).map(key => [key, trimObjValues(obj[key])]));
+  if (Object.prototype.toString.call(obj) === "[object Array]")
+    return obj.map(item => trimObjValues(item));
   return obj;
 };
 
