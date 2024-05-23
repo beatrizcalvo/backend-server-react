@@ -15,10 +15,7 @@ const LogsUserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a code for table operation!"]
     },
-    dataPrevious: {
-      type: String,
-      required: [true, "Please provide the data previous operation!"]
-    },
+    dataPrevious: { type: String },
     dataNext: {
       type: String,
       required: [true, "Please provide the data after operation!"]
