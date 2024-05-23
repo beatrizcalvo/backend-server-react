@@ -60,7 +60,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
-      ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
+      ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields }),
       ...(Object.keys(newContactPointFields).length !== 0 && { contactPoint: newContactPointFields })
     };
     
