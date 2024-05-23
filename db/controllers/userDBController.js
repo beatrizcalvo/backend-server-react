@@ -54,7 +54,7 @@ const updateUser = async function (id, updateFields) {
   session.startTransaction();
   try {
     // Separate field for update profile and for update user
-    const { profile: updateFieldsProfile, contactPoint: updateFieldsContactPoint ...updateFieldsUser } = updateFields;
+    const { profile: updateFieldsProfile, contactPoint: updateFieldsContactPoint, ...updateFieldsUser } = updateFields;
 
     // Find user to update, verify modifications and update if needed
     const userToUpdate = await User.findById(id).lean().exec();
