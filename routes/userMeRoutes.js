@@ -55,9 +55,13 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(req.body.person?.birthDate && { birthDate: new Date(req.body.person.birthDate).toISOString().slice(0, 10) }),
       ...(nationalityId && { firstNationality: { _id: nationalityId, code: nationalityCode } })
     };
+    const newContactPointFields = {
+      
+    };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
       ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields })
+      ...(Object.keys(newContactPointFields).length !== 0 && { contactPoint: newContactPointFields })
     };
     
     // Check if there are fields to update
