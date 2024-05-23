@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const UserToken = require("../models/userTokenModel");
 const LogsUser = require("../models/logsUserModel");
 const Profile = require("../models/profileModel");
+const Nationality = require("../models/nationalityModel");
 const Role = require("../models/roleModel");
 
 const profileDBController = require("./profileDBController");
