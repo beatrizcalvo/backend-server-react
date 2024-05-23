@@ -24,7 +24,7 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 };
 
 const fieldsCSVProfiles = [
-  { value: "firstName" }
+  { value: "firstName" }, { value: "lastName" }, { value: "secondLastName" }, { value: "gender" }
 ];
 
 // Generate a CSV register associated with the data
