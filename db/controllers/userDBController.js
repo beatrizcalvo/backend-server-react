@@ -25,7 +25,9 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 const fieldsCSVProfiles = [];
 
-const generateCSV = function (fields, data) => {
+// Generate a CSV register associated with the data
+const generateCSV = function (fields, data) {
+  const json2csv = new Parser({ fields });
   
 };
 
