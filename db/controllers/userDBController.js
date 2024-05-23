@@ -72,7 +72,7 @@ const updateUser = async function (id, updateFields) {
     if (updateFieldsUser !== null) {
       verifyFieldsModif(updateFieldsUser, userToUpdate);
       if (Object.keys(updateFieldsUser).length !== 0) {
-        await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session).lean().exec();
+        await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session);
         console.log("Update user with id=" + userToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsUser)));
         modifiedCount += Object.keys(updateFieldsUser).length;
       }
@@ -83,7 +83,7 @@ const updateUser = async function (id, updateFields) {
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
-        await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session).lean().exec();
+        await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session);
         console.log("Update profile with id=" + profileToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
