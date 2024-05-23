@@ -23,7 +23,7 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 // Generate a CSV register associated with the data
 const generateCSV = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + data.secondLastName || "" + "#" + data.gender || "";
+  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "");
 };
 
 const createUser = async function (firstName, lastName, email, password) {
