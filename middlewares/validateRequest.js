@@ -30,7 +30,6 @@ const createValidationErrors = function (error) {
   const listErrors = [];
   error.details.map(err => {
     const field = err.path.join(".");
-    console.log(err);
     switch (err.type) {
       case "any.empty":
       case "any.required":
@@ -49,6 +48,9 @@ const createValidationErrors = function (error) {
         break;
       case "string.min":
         listErrors.push(errorMessages.AUTH_API_F_0003(field, err.context.limit));
+        break;
+      case "array.max":
+        listErrors.push(errorMessages.AUTH_API_F_0014(field, err.context.limit));
         break;
       case "object.unknown":
         listErrors.push(errorMessages.AUTH_API_F_0004(field));
