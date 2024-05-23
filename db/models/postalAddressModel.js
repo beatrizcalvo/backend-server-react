@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const PostalAddressSchema = new mongoose.Schema(
   {
+    profileId: {
+      type: String,
+      required: [true, "Please provide a profile id!"],
+    },
     addressLine1: {
       type: String,
       required: [true, "Please provide an address line 1!"],
