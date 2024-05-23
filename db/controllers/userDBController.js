@@ -98,6 +98,9 @@ const updateUser = async function (id, updateFields) {
       }
     }
 
+    // Find postal address to update, verify modifications and update if needed
+    let postalAddressToUpdate = "";
+
     // Commit the changes
     await session.commitTransaction();
     return { modifiedCount: modifiedCount }; 
