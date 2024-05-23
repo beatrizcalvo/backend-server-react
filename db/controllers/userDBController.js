@@ -29,8 +29,8 @@ const fieldsCSVProfiles = [
 
 // Generate a CSV register associated with the data
 const generateCSV = function (fields, data) {
-  const json2csv = new Parser({ fields });
-  return json2csv.parse(data)[1];
+  const json2csv = new Parser({ fields: fields, delimiter: "#" });
+  return json2csv.parse(data).toString();
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -44,7 +44,7 @@ const createUser = async function (firstName, lastName, email, password) {
 
     // Save user creation in logs
     console.log(generateCSV(fieldsCSVProfiles, newProfile));
-    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataPrevious: "" }).save({ session });
+    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01" }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
