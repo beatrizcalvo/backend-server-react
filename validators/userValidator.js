@@ -16,6 +16,7 @@ const updateSchema = Joi.object({
   },
   contactPoint: {
     postalAddress: {
+      addressLines: Joi.array().items(Joi.string()).max(2).optional()
     }
   }
 });
