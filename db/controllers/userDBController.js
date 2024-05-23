@@ -23,8 +23,8 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 // Generate a CSV register associated with the data
 const generateCSV = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.bithDate && new Date(data.birthDate).toISOString().slice(0, 10)) || "") + 
-    "#";
+  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.birthDate && new Date(data.birthDate).toISOString().slice(0, 10) || "") + 
+    "#" + (data.firstNationality.description || "") + "#" + (data.role.code || "");
 };
 
 const createUser = async function (firstName, lastName, email, password) {
