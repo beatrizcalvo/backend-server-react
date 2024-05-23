@@ -12,14 +12,6 @@ const RoleSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: true
-    },
-    createdBy: {
-      type: String,
-      default: "system"
-    },
-    updatedBy: {
-      type: String,
-      default: "system"
     }
   },
   { timestamps: true }
