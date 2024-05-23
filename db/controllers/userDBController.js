@@ -23,7 +23,7 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 
 // Generate a CSV register associated with the data
 const generateCSV = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + data.secondLastName + "#" + data.gender;
+  return data.firstName + "#" + data.lastName + "#" + data.secondLastName || "" + "#" + data.gender || "";
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -112,7 +112,7 @@ const deleteUser = async function (id) {
     // Delete Profile & LogsUser
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
     console.log("Deleted profile with id=" + userDeleted.profileId);
-    await LogsUser.deleteMany({ email: userDeleted.email }).session(session).exec();
+    await LogsUser.deleteMany({ userEmail: userDeleted.email }).session(session).exec();
     console.log("Deleted all logsUser with email=" + userDeleted.email);
 
     // Commit the changes
