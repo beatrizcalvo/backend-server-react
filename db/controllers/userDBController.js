@@ -26,8 +26,8 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   });
 };
 
-// Generate a CSV register associated with the data
-const generateCSV = function (data) {
+// Generate a register associated with the data
+const generateRegData = function (data) {
   return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.birthDate && formatDate(data.birthDate) || "") + 
     "#" + (data.firstNationality?.description || "") + "#" + data.role.code;
 };
@@ -44,7 +44,8 @@ const createUser = async function (firstName, lastName, email, password) {
     console.log("Created user with id=" + newUser._id);
 
     // Save user creation in logs
-    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateCSV(newProfile) }).save({ session });
+    const newLogsUser = await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateRegData(newProfile) }).save({ session });
+    console.log("Created logsuser with id=" + newLogsUser._id);
     
     // Commit the changes
     await session.commitTransaction();
@@ -83,15 +84,13 @@ const updateUser = async function (id, updateFields) {
     if (updateFieldsProfile !== null) {
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
-        await Profile.updateOne({ _id: profileToUpdate._id }, updateFieldsProfile).session(session);
-        console.log("Update profile with id=" + profileToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
+        const updatedProfile = await Profile.findByIdAndUpdate(profileToUpdate._id, updateFieldsProfile, { new: true }).session(session);
+        console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
+        // Save user update in logs
+        const newLogsUser = await LogsUser({ userEmail: email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData(profileToUpdate), dataNext: generateRegData(updatedProfile) }).save({ session });
+        console.log("Created logsuser with id=" + newLogsUser._id);
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
-    }
-
-    // Save user update in logs
-    if (modifiedCount !== 0) {
-      
     }
 
     // Commit the changes
