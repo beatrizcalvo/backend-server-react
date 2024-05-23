@@ -23,12 +23,14 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   });
 };
 
-const fieldsCSVProfiles = [];
+const fieldsCSVProfiles = [
+  { label: "First name", value: "firstName" }
+];
 
 // Generate a CSV register associated with the data
 const generateCSV = function (fields, data) {
   const json2csv = new Parser({ fields });
-  
+  return json2csv.parse(data);
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -43,6 +45,7 @@ const createUser = async function (firstName, lastName, email, password) {
     const result = await User({ email: email, password: password, profileId: profile._id }).save({ session });
 
     // Save user creation in logs
+    console.log(generateCSV(fieldsCSVProfiles, profile));
     await LogsUser({ email: email, operationType: "A", codeTableOperation: "01", dataPrevious: "" }).save({ session });
     
     // Commit the changes
