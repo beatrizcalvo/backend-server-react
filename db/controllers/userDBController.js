@@ -1,5 +1,3 @@
-const { Parser } = require("@json2csv/plainjs");
-
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const UserToken = require("../models/userTokenModel");
@@ -23,14 +21,9 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
   });
 };
 
-const fieldsCSVProfiles = [
-  { value: "firstName" }, { value: "lastName" }, { value: "secondLastName" }, { value: "gender" }
-];
-
 // Generate a CSV register associated with the data
-const generateCSV = function (fields, data) {
-  const json2csv = new Parser({ fields: fields, delimiter: "#", header: false });
-  return json2csv.parse(data);
+const generateCSV = function (data) {
+  return data.firstName + "#" + data.lastName + "#" + data.secondLastName + "#" + data.gender;
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -43,7 +36,7 @@ const createUser = async function (firstName, lastName, email, password) {
     const newUser = await User({ email: email, password: password, profileId: newProfile._id }).save({ session });
 
     // Save user creation in logs
-    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateCSV(fieldsCSVProfiles, newProfile) }).save({ session });
+    await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateCSV(newProfile) }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
