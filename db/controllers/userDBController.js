@@ -33,7 +33,7 @@ const createUser = async function (firstName, lastName, email, password) {
     const result = await User({ email: email, password: password, profileId: profile._id }).save({ session });
 
     // Save user creation in logs
-    
+    await LogsUser({ email: email, operationType: "A", codeTableOperation: "01", dataPrevious: "" }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
