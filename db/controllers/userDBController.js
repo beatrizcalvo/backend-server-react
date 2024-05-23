@@ -1,3 +1,5 @@
+const { Parser } = require("@json2csv/plainjs");
+
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const UserToken = require("../models/userTokenModel");
@@ -19,6 +21,12 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
       || objDB[key];
     newValue === oldValue && delete objFieldsModif[key];
   });
+};
+
+const fieldsCSVProfiles = [];
+
+const generateCSV = function (fields, data) => {
+  
 };
 
 const createUser = async function (firstName, lastName, email, password) {
