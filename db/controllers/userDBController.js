@@ -24,7 +24,7 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 };
 
 const fieldsCSVProfiles = [
-  { label: "First name", value: "firstName" }
+  { value: "firstName" }
 ];
 
 // Generate a CSV register associated with the data
@@ -37,20 +37,18 @@ const createUser = async function (firstName, lastName, email, password) {
   let session = await mongoose.startSession();
   session.startTransaction();
   try {
-    // Save profile data
-    const role = await Role.findOne({ code: "01", active: true }).exec();
-    const profile = await Profile({ firstName: firstName, lastName: lastName, role: role }).save({ session });
-
-    // Save user data
-    const result = await User({ email: email, password: password, profileId: profile._id }).save({ session });
+    // Save user and profile data
+    const roleFind = await Role.findOne({ code: "01", active: true }).exec();
+    const newProfile = await Profile({ firstName: firstName, lastName: lastName, role: roleFind }).save({ session });
+    const newUser = await User({ email: email, password: password, profileId: newProfile._id }).save({ session });
 
     // Save user creation in logs
-    console.log(generateCSV(fieldsCSVProfiles, profile));
+    console.log(generateCSV(fieldsCSVProfiles, newProfile));
     await LogsUser({ email: email, operationType: "A", codeTableOperation: "01", dataPrevious: "" }).save({ session });
     
     // Commit the changes
     await session.commitTransaction();
-    return result;
+    return newUser;
   } catch (error) {
     // Rollback any changes made in the database
     console.log("Rollback all changes made in the database");
