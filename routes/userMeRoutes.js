@@ -14,7 +14,7 @@ const { userResponseDTO } = require("./dto/userDTO");
 router.get("/me", async (req, res, next) => {
   try {
     const user = await userDBController.findById(req.currentUserId);
-    const profile = await profileDBController.findByIdPopulated(user.profileId);
+    const profile = await profileDBController.findByIdWithPostalAddressPopulated(user.profileId);
 
     const responseBody = userResponseDTO(user, profile);
     console.log("GET /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
