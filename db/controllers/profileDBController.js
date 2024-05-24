@@ -13,7 +13,7 @@ const findByIdPopulated = function (id) {
 };
 
 const findByIdWithPostalAddressPopulated = function (id) {
-  return Profile.aggregate.lookup([{
+  return Profile.aggregate([{
     $lookup: {
       from: PostalAddress,
       localField: "_id",
