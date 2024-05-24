@@ -1,6 +1,7 @@
 const Profile = require("../models/profileModel");
 const Nationality = require("../models/nationalityModel");
 const Role = require("../models/roleModel");
+const PostalAddress = require("../models/postalAddressModel");
 
 const NON_SELECTED_FIELDS = "-__v";
 
@@ -11,4 +12,13 @@ const findByIdPopulated = function (id) {
   ]);
 };
 
-module.exports = { findByIdPopulated }
+const findByIdWithPostalAddressPopulated = function (id) {
+  return Profile.aggregate.lookup(
+    from: PostalAddress,
+    localField: "_id",
+    foreignField: "profileId",
+    as: "postalAddresses"
+  );
+};
+
+module.exports = { findByIdPopulated, findByIdWithPostalAddressPopulated }
