@@ -35,6 +35,9 @@ const generateRegData = function (tableCode, data) {
       (data.birthDate && formatDate(data.birthDate) || "") + "#" + (data.firstNationality?.description || "") + "#" + 
       data.role.code;
   }
+  if (tableCode === "02") {
+    return data.addressLine1 + "#" + (data.addressLine2 || "");
+  }
   return null;    
 };
 
@@ -92,7 +95,7 @@ const updateUser = async function (id, updateFields) {
         // Insert new postal address
         const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2 }).save({ session });
         console.log("Created postaladdress with id=" + newPostalAddress._id);
-        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData(newPostalAddress) }).save({ session });
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData("02", newPostalAddress) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
       } else {
         // Update postal address
