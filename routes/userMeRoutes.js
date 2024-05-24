@@ -56,14 +56,15 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(nationalityId && { firstNationality: { _id: nationalityId, code: nationalityCode } })
     };
     const newPostalAddressFields = {
-      ...(req.body.contactPoint?.postalAddress?.addressLines?.length > 0 && { addressLine1: req.body.contactPoint.postalAddress.addressLines[0] })
+      ...(req.body.contactPoint?.postalAddress?.addressLines?.length > 0 && { addressLine1: req.body.contactPoint.postalAddress.addressLines[0] }),
+      ...(req.body.contactPoint?.postalAddress?.addressLines?.length > 1 && { addressLine2: req.body.contactPoint.postalAddress.addressLines[1] })
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
       ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields }),
       ...(Object.keys(newPostalAddressFields).length !== 0 && { postalAddress: newPostalAddressFields })
     };
-    console.log(newUserFields);
+    
     // Check if there are fields to update
     if (Object.keys(newUserFields).length === 0) {
       return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0012()])));
