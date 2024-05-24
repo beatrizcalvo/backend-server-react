@@ -17,6 +17,6 @@ const PostalAddressSchema = new mongoose.Schema(
 
 // Set database and collection name 
 const appdb = mongoose.connection.useDb("reactApp");
-const postalAddressesModel = appdb.model("PostaAddress", ContactPointSchema);
+const postalAddressesModel = appdb.model("PostaAddress", PostalAddressSchema);
 
 module.exports = postalAddressesModel;
