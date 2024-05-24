@@ -13,7 +13,7 @@ const findByIdPopulated = function (id) {
 };
 
 const findByIdWithPostalAddressPopulated = async function (id) {
-  const profile = await findByIdPopulated(id);
+  const profile = await findByIdPopulated(id).lean();
   return { ...profile };
 };
 
