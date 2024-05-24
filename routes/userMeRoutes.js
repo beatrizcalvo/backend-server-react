@@ -63,7 +63,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(Object.keys(newProfileFields).length !== 0 && { profile: newProfileFields }),
       ...(Object.keys(newPostalAddressFields).length !== 0 && { postalAddress: newPostalAddressFields })
     };
-    
+    console.log(newUserFields);
     // Check if there are fields to update
     if (Object.keys(newUserFields).length === 0) {
       return next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0012()])));
