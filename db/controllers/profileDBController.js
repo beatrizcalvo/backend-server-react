@@ -3,7 +3,7 @@ const Nationality = require("../models/nationalityModel");
 const Role = require("../models/roleModel");
 const PostalAddress = require("../models/postalAddressModel");
 
-const NON_SELECTED_FIELDS = "-__v";
+const NON_SELECTED_FIELDS = "-__v -createdAt -updatedAt";
 
 const findByIdPopulated = function (id) {
   return Profile.findById(id, NON_SELECTED_FIELDS).populate([
