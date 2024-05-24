@@ -17,7 +17,8 @@ const updateSchema = Joi.object({
   contactPoint: {
     postalAddress: {
       addressLines: Joi.array().items(Joi.string()).max(2).optional(),
-      city: Joi.string().optional()
+      city: Joi.string().optional(),
+      zipCode: Joi.string().when('city', { is: Joi.exist(), then: Joi.required(), otherwise: Joi.optional() })
     }
   }
 });
