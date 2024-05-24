@@ -14,7 +14,8 @@ const findByIdPopulated = function (id) {
 
 const findByIdWithPostalAddressPopulated = async function (id) {
   const profile = await findByIdPopulated(id).lean();
-  return { ...profile };
+  const postalAddress = await PostalAddress.findOne({ profileId: profile._id }, NON_SELECTED_FIELDS).lean();
+  return { ...profile, postalAddress: postalAddress };
 };
 
 module.exports = { findByIdPopulated, findByIdWithPostalAddressPopulated }
