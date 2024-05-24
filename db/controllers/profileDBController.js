@@ -18,7 +18,7 @@ const findByIdWithPostalAddressPopulated = function (id) {
     localField: "_id",
     foreignField: "profileId",
     as: "postalAddresses"
-  });
+  }).exec();
 };
 
 module.exports = { findByIdPopulated, findByIdWithPostalAddressPopulated }
