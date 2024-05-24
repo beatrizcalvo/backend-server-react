@@ -14,6 +14,8 @@ const { userResponseDTO } = require("./dto/userDTO");
 router.get("/me", (req, res, next) => {
   userDBController.findById(req.currentUserId)
     .then(user => {
+      profileDBController.findByIdWithPostalAddressPopulated(user.profileId).then(profile => console.log(profile));
+      
       profileDBController.findByIdPopulated(user.profileId)
         .then(profile => {
           const responseBody = userResponseDTO(user, profile);
@@ -22,6 +24,7 @@ router.get("/me", (req, res, next) => {
         });
     })
     .catch(error => {
+      console.log(error);
       next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
     });
 });
