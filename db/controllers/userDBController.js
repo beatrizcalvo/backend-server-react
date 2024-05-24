@@ -93,7 +93,8 @@ const updateUser = async function (id, updateFields) {
       const postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
       if (postalAddressToUpdate === null) {
         // Insert new postal address
-        const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2 }).save({ session });
+        const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2, 
+                                                      city: updateFieldsPostalAddress.city }).save({ session });
         console.log("Created postaladdress with id=" + newPostalAddress._id);
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData("02", newPostalAddress) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
@@ -101,7 +102,8 @@ const updateUser = async function (id, updateFields) {
         // Update postal address
         const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
         console.log("Update postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
-        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), dataNext: generateRegData("02", updatedPostalAddress) }).save({ session });        
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), 
+                                            dataNext: generateRegData("02", updatedPostalAddress) }).save({ session });        
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=02");
       }
       modifiedCount += Object.keys(updateFieldsPostalAddress).length;
@@ -119,7 +121,8 @@ const updateUser = async function (id, updateFields) {
           ]).session(session);
         console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         // Save user update in logs
-        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData("01", profileToUpdate), dataNext: generateRegData("01", updatedProfile) }).save({ session });
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData("01", profileToUpdate), 
+                                            dataNext: generateRegData("01", updatedProfile) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=01");
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
