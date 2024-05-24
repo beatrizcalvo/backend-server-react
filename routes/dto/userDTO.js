@@ -21,13 +21,14 @@ const userResponseDTO = (userDB, profileDB) => {
       })
     },   
     contactPoint: {
+      ...(!!profileDB.postalAddress && {
+        postalAddress: {
+          addressLines: []
+        }
+      }),
       electronicAddress: {
         emailAddress: userDB.email
       }
-    },
-    audit: {
-      creationDate: userDB.createdAt,
-      modificationDate: userDB.updatedAt
     }
   };
 };
