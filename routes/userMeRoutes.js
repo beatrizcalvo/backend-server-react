@@ -11,21 +11,17 @@ const profileDBController = require("../db/controllers/profileDBController");
 const nationalityDBController = require("../db/controllers/nationalityDBController");
 const { userResponseDTO } = require("./dto/userDTO");
 
-router.get("/me", (req, res, next) => {
-  userDBController.findById(req.currentUserId)
-    .then(user => {
-      
-      profileDBController.findByIdPopulated(user.profileId)
-        .then(profile => {
-          const responseBody = userResponseDTO(user, profile);
-          console.log("GET /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
-          res.status(200).send(responseBody);
-        });
-    })
-    .catch(error => {
-      console.log(error);
-      next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
-    });
+router.get("/me", async (req, res, next) => {
+  try {
+    const user = await userDBController.findById(req.currentUserId);
+    const profile = await profileDBController.findByIdPopulated(user.profileId);
+
+    const responseBody = userResponseDTO(user, profile);
+    console.log("GET /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
+    res.status(200).send(responseBody);
+  } catch (error) {
+    next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
+  }
 });
 
 router.delete("/me", (req, res, next) => {
