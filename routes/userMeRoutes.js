@@ -20,6 +20,7 @@ router.get("/me", async (req, res, next) => {
     console.log("GET /users/me ## currentUserId: " + req.currentUserId + " || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
     res.status(200).send(responseBody);
   } catch (error) {
+    console.log(error);
     next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
   }
 });
