@@ -56,7 +56,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(nationalityId && { firstNationality: { _id: nationalityId, code: nationalityCode } })
     };
     const newPostalAddressFields = {
-      ...(req.body.contactPoint?.postalAddress?.addressLines?.length() > 0 && { addressLine1: req.body.contactPoint.postalAddress.addressLines[0] })
+      ...(req.body.contactPoint?.postalAddress?.addressLines?.length > 0 && { addressLine1: req.body.contactPoint.postalAddress.addressLines[0] })
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
