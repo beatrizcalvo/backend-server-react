@@ -72,7 +72,7 @@ const updateUser = async function (id, updateFields) {
   session.startTransaction();
   try {
     // Separate field for update profile and for update user
-    const { profile: updateFieldsProfile, contactPoint: updateFieldsContactPoint, ...updateFieldsUser } = updateFields;
+    const { profile: updateFieldsProfile, postalAddress: updateFieldsPostalAddress, ...updateFieldsUser } = updateFields;
 
     // Find user to update, verify modifications and update if needed
     const userToUpdate = await User.findById(id);
@@ -86,8 +86,8 @@ const updateUser = async function (id, updateFields) {
     }
 
     // Find profile to update, verify modifications and update if needed
-    let profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
     if (updateFieldsProfile !== null) {
+      let profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
         const updatedProfile = await Profile.findByIdAndUpdate(profileToUpdate._id, updateFieldsProfile, { new: true })
@@ -104,9 +104,9 @@ const updateUser = async function (id, updateFields) {
     }
 
     // Find postal address to update, verify modifications and update if needed
-    let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId}) ;
-    if (updateFieldsContactPoint !== null) {
-      
+    if (updateFieldsPostalAddress !== null) {
+      let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId});
+      console.log(postalAddressToUpdate);
     }
 
     // Commit the changes
