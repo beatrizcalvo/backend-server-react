@@ -12,14 +12,4 @@ const findByIdPopulated = function (id) {
   ]);
 };
 
-const findByIdWithPostalAddressPopulated = function (id) {
-  return Profile.aggregate([{
-    $lookup: {
-      from: "postaladdresses",
-      localField: "_id",
-      foreignField: "profileId",
-      as: "postalAddresses"
-  }}]);
-};
-
-module.exports = { findByIdPopulated, findByIdWithPostalAddressPopulated }
+module.exports = { findByIdPopulated }
