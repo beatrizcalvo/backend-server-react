@@ -12,4 +12,9 @@ const findByIdPopulated = function (id) {
   ]);
 };
 
-module.exports = { findByIdPopulated }
+const findByIdWithPostalAddressPopulated = async function (id) {
+  const profile = await findByIdPopulated(id);
+  return { ...profile };
+};
+
+module.exports = { findByIdPopulated, findByIdWithPostalAddressPopulated }
