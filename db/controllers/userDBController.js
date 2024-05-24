@@ -5,6 +5,7 @@ const LogsUser = require("../models/logsUserModel");
 const Profile = require("../models/profileModel");
 const Nationality = require("../models/nationalityModel");
 const Role = require("../models/roleModel");
+const PostalAddress = require("../models/postalAddressModel");
 
 const profileDBController = require("./profileDBController");
 
@@ -28,9 +29,13 @@ const verifyFieldsModif = function (objFieldsModif, objDB) {
 };
 
 // Generate a register associated with the data
-const generateRegData = function (data) {
-  return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + (data.birthDate && formatDate(data.birthDate) || "") + 
-    "#" + (data.firstNationality?.description || "") + "#" + data.role.code;
+const generateRegData = function (tableCode, data) {
+  if (tableCode === "01") {
+    return data.firstName + "#" + data.lastName + "#" + (data.secondLastName || "") + "#" + (data.gender || "") + "#" + 
+      (data.birthDate && formatDate(data.birthDate) || "") + "#" + (data.firstNationality?.description || "") + "#" + 
+      data.role.code;
+  }
+  return null;    
 };
 
 const createUser = async function (firstName, lastName, email, password) {
@@ -45,8 +50,8 @@ const createUser = async function (firstName, lastName, email, password) {
     console.log("Created user with id=" + newUser._id);
 
     // Save user creation in logs
-    const newLogsUser = await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateRegData(newProfile) }).save({ session });
-    console.log("Created logsuser with id=" + newLogsUser._id);
+    const newLogsUser = await LogsUser({ userEmail: email, operationType: "A", codeTableOperation: "01", dataNext: generateRegData("01", newProfile) }).save({ session });
+    console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=01");
     
     // Commit the changes
     await session.commitTransaction();
@@ -67,10 +72,10 @@ const updateUser = async function (id, updateFields) {
   session.startTransaction();
   try {
     // Separate field for update profile and for update user
-    const { profile: updateFieldsProfile, postalAddress: updateFieldsPostalAddress, ...updateFieldsUser } = updateFields;
+    const { profile: updateFieldsProfile, contactPoint: updateFieldsContactPoint, ...updateFieldsUser } = updateFields;
 
     // Find user to update, verify modifications and update if needed
-    const userToUpdate = await User.findById(id).lean().exec();
+    const userToUpdate = await User.findById(id);
     if (updateFieldsUser !== null) {
       verifyFieldsModif(updateFieldsUser, userToUpdate);
       if (Object.keys(updateFieldsUser).length !== 0) {
@@ -93,13 +98,16 @@ const updateUser = async function (id, updateFields) {
         console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         // Save user update in logs
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData(profileToUpdate), dataNext: generateRegData(updatedProfile) }).save({ session });
-        console.log("Created logsuser with id=" + newLogsUser._id);
+        console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=01");
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
     }
 
     // Find postal address to update, verify modifications and update if needed
-    let postalAddressToUpdate = "";
+    let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId}) ;
+    if (updateFieldsContactPoint !== null) {
+      
+    }
 
     // Commit the changes
     await session.commitTransaction();
