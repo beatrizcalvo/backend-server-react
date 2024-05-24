@@ -90,7 +90,7 @@ const updateUser = async function (id, updateFields) {
 
     // Find postal address to update, verify modifications and update if needed
     if (updateFieldsPostalAddress !== null) {
-      let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
+      const postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
       if (postalAddressToUpdate === null) {
         // Insert new postal address
         const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2 }).save({ session });
@@ -99,13 +99,17 @@ const updateUser = async function (id, updateFields) {
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
       } else {
         // Update postal address
+        const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
+        console.log("Update postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), dataNext: generateRegData("02", updatedPostalAddress) }).save({ session });        
+        console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=02");
       }
       modifiedCount += Object.keys(updateFieldsPostalAddress).length;
     }
 
     // Find profile to update, verify modifications and update if needed
     if (updateFieldsProfile !== null) {
-      let profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
+      const profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
       verifyFieldsModif(updateFieldsProfile, profileToUpdate);
       if (Object.keys(updateFieldsProfile).length !== 0) {
         const updatedProfile = await Profile.findByIdAndUpdate(profileToUpdate._id, updateFieldsProfile, { new: true })
