@@ -85,6 +85,21 @@ const updateUser = async function (id, updateFields) {
       }
     }
 
+    // Find postal address to update, verify modifications and update if needed
+    if (updateFieldsPostalAddress !== null) {
+      let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
+      if (postalAddressToUpdate === null) {
+        // Insert new postal address
+        const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2 }).save({ session });
+        console.log("Created postaladdress with id=" + newPostalAddress._id);
+        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData(newPostalAddress) }).save({ session });
+        console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
+      } else {
+        // Update postal address
+      }
+      modifiedCount += Object.keys(updateFieldsPostalAddress).length;
+    }
+
     // Find profile to update, verify modifications and update if needed
     if (updateFieldsProfile !== null) {
       let profileToUpdate = await profileDBController.findByIdPopulated(userToUpdate.profileId);
@@ -101,12 +116,6 @@ const updateUser = async function (id, updateFields) {
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=01");
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
-    }
-
-    // Find postal address to update, verify modifications and update if needed
-    if (updateFieldsPostalAddress !== null) {
-      let postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId});
-      console.log(postalAddressToUpdate);
     }
 
     // Commit the changes
