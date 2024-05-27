@@ -8,16 +8,20 @@ const PostalAddressSchema = new mongoose.Schema(
     },
     addressLine1: {
       type: String,
-      required: [true, "Please provide an address line 1!"],
+      required: [true, "Please provide an address line 1!"]
     },
     addressLine2: { type: String },
     city: {
       type: String,
-      required: [true, "Please provide a city name!"],
+      required: [true, "Please provide a city name!"]
     },
     zipCode: {
       type: String,
-      required: [true, "Please provide a zip code for the city!"],
+      required: [true, "Please provide a zip code for the city!"]
+    },
+    country: {
+      type: String,
+      required: [true, "Please provide a country code for the city!"]
     }
   },
   { timestamps: true }
