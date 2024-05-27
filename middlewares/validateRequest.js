@@ -29,7 +29,6 @@ const trimObjValues = function (obj) {
 const createValidationErrors = function (error) {
   const listErrors = [];
   error.details.map(err => {
-    console.log(err);
     const field = err.path.join(".");
     switch (err.type) {
       case "any.empty":
@@ -45,6 +44,7 @@ const createValidationErrors = function (error) {
       case "date.format": 
       case "string.base":
       case "string.email":
+      case "string.pattern.base":
         listErrors.push(errorMessages.AUTH_API_F_0002(field));
         break;
       case "string.min":
