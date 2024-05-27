@@ -29,6 +29,7 @@ const trimObjValues = function (obj) {
 const createValidationErrors = function (error) {
   const listErrors = [];
   error.details.map(err => {
+    console.log(err);
     const field = err.path.join(".");
     switch (err.type) {
       case "any.empty":
