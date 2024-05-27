@@ -5,6 +5,7 @@ const router = express.Router();
 const nationalityDBController = require("../db/controllers/nationalityDBController");
 
 router.get("/", (req, res, next) => {
+  console.log(req.headers);
   nationalityDBController.findAllActive()
     .then(nationalities => {
       // Check if no exists nationalities active
