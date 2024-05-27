@@ -36,7 +36,7 @@ const generateRegData = function (tableCode, data) {
       data.role.code;
   }
   if (tableCode === "02") {
-    return data.addressLine1 + "#" + (data.addressLine2 || "");
+    return data.addressLine1 + "#" + (data.addressLine2 || "") + # + (data.city || "");
   }
   return null;    
 };
