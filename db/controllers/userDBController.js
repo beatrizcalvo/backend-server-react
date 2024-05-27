@@ -101,7 +101,6 @@ const updateUser = async function (id, updateFields) {
       } else {
         // Update postal address
         verifyFieldsModif(updateFieldsPostalAddress, postalAddressToUpdate);
-        console.log(updateFieldsPostalAddress);
         const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
         console.log("Update postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), 
