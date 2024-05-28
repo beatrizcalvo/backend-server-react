@@ -90,6 +90,7 @@ const updateUser = async function (id, updateFields) {
 
     // Find postal address to update, verify modifications and update if needed
     if (updateFieldsPostalAddress !== null) {
+      console.log(updateFieldsPostalAddress);
       const postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
       if (postalAddressToUpdate === null) {
         // Insert new postal address
