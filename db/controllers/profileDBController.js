@@ -17,6 +17,8 @@ const findByIdWithPostalAddressPopulated = async function (id) {
   const postalAddress = await PostalAddress.findOne({ profileId: profile._id }, NON_SELECTED_FIELDS).lean();
   if (postalAddress !== null) {
     const countryFind = await Nationality.findOne({ code: postalAddress.code }, "code country").lean();
+    console.log(countryFind);
+    console.log({ country: { code: countryFind.code, description: countryFind.country }});
     Object.assign(postalAddress, { country: { code: countryFind.code, description: countryFind.country }});
   }
   return { ...profile, postalAddress: postalAddress };
