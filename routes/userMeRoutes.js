@@ -47,6 +47,13 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       if (nationalityFound.length === 0) return next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0011()])));
       nationalityId = nationalityFound[0]._id;
     }
+
+    // Check if postalAddress.country exists and is active
+    const countryCode = req.body.contactPoint?.postalAddress?.country?.code;
+    if (countryCode) {
+      const countryFound = await nationalityDBController.findByCodeActive(countryCode);
+      if (countryFound.length === 0) return next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0015()])));
+    }
     
     // Set update fields and remove undefined
     const newProfileFields = {
