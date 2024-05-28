@@ -11,7 +11,7 @@ const updateSchema = Joi.object({
     gender: Joi.string().valid("Female", "Male").optional(),
     birthDate: Joi.date().iso().optional(),
     firstNationality: {
-      code: Joi.string().optional()
+      code: Joi.string().min(2).max(2).optional()
     }
   },
   contactPoint: {
@@ -19,7 +19,9 @@ const updateSchema = Joi.object({
       addressLines: Joi.array().items(Joi.string()).max(2).optional(),
       city: Joi.string().optional(),
       zipCode: Joi.string().regex(/^[0-9]{5}(?:-[0-9]{4})?$/i).when('city', { is: Joi.exist(), then: Joi.required() }),
-      country: Joi.string().when('city', { is: Joi.exist(), then: Joi.required() })
+      country: Joi.object().keys({
+        code: Joi.string().min(2).max(2)
+      }).when('city', { is: Joi.exist(), then: Joi.object().keys({ code: Joi.required() }).required() })
     }
   }
 });
