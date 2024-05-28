@@ -36,8 +36,7 @@ const generateRegData = function (tableCode, data) {
       data.role.code;
   }
   if (tableCode === "02") {
-    return (data.addressLine1 || "") + "#" + (data.addressLine2 || "") + "#" + (data.city || "") + "#" + (data.zipCode || "") + "#" +
-      (data.country || "");
+    return data.addressLine1 + "#" + (data.addressLine2 || "") + "#" + data.city + "#" + data.zipCode + "#" + data.country;
   }
   return null;    
 };
@@ -153,9 +152,11 @@ const deleteUser = async function (id) {
     await UserToken.findOneAndDelete({ userId: userDeleted._id }).session(session).exec();
     console.log("Deleted userToken with userId=" + userDeleted._id);
 
-    // Delete Profile & LogsUser
+    // Delete Profile, PostalAddress & LogsUser
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
     console.log("Deleted profile with id=" + userDeleted.profileId);
+    await PostalAddress.deleteOne({ profileId: userDeleted.profileId }).session(session).exec();
+    console.log("Deleted postaladdress with profileId=" + userDeleted.profileId);
     await LogsUser.deleteMany({ userEmail: userDeleted.email }).session(session).exec();
     console.log("Deleted all logsUser with userEmail=" + userDeleted.email);
 
