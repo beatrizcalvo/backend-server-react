@@ -25,7 +25,7 @@ const userResponseDTO = (userDB, profileDB) => {
         postalAddress: {
           addressLines: [
             profileDB.postalAddress.addressLine1,
-            profileDB.postalAddress.addressLine2
+            ...(!!profileDB.postalAddress.addressLine2 && { profileDB.postalAddress.addressLine2 })
           ],
           city: profileDB.postalAddress.city,
           zipCode: profileDB.postalAddress.zipCode,
