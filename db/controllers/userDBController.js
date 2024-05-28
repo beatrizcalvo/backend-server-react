@@ -128,7 +128,7 @@ const updateUser = async function (id, updateFields) {
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
     }
-
+console.log("OK");
     // Commit the changes
     await session.commitTransaction();
     return { modifiedCount: modifiedCount }; 
