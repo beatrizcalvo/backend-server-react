@@ -23,11 +23,9 @@ const userResponseDTO = (userDB, profileDB) => {
     contactPoint: {
       ...(profileDB.postalAddress && {
         postalAddress: {
-          addressLines: [
-            (profileDB.postalAddress.addressLine1 && !profileDB.postalAddress.addressLine2) 
-              ? (profileDB.postalAddress.addressLine1)
-              : "Vienen los dos"
-          ],
+          addressLines: (profileDB.postalAddress.addressLine1 && !profileDB.postalAddress.addressLine2) 
+            ? [profileDB.postalAddress.addressLine1] 
+            : [],
           city: profileDB.postalAddress.city,
           zipCode: profileDB.postalAddress.zipCode,
           country: {
