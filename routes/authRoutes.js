@@ -110,6 +110,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
         // Create new access token
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
+        delete responseBody["refresh_token"];
         console.log('POST /auth/refresh ## Request Body: {"refresh_token": "' + refreshToken + '"} || Response Status: 201 ## Response Body: ' + 
                     JSON.stringify(responseBody));
         res.status(201).send(responseBody);
