@@ -90,12 +90,11 @@ const updateUser = async function (id, updateFields) {
 
     // Find postal address to update, verify modifications and update if needed
     if (updateFieldsPostalAddress !== null) {
-      console.log(updateFieldsPostalAddress);
       const postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
       if (postalAddressToUpdate === null) {
         // Insert new postal address
         const newPostalAddress = await PostalAddress({ profileId: userToUpdate.profileId, addressLine1: updateFieldsPostalAddress.addressLine1, addressLine2: updateFieldsPostalAddress.addressLine2, 
-                                                      city: updateFieldsPostalAddress.city, zipCode: updateFieldsPostalAddress.zipCode, country: updateFieldsPostalAddress.country.code }).save({ session });
+                                                      city: updateFieldsPostalAddress.city, zipCode: updateFieldsPostalAddress.zipCode, country: updateFieldsPostalAddress.country }).save({ session });
         console.log("Created postaladdress with id=" + newPostalAddress._id);
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData("02", newPostalAddress) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
