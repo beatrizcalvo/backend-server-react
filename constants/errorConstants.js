@@ -124,6 +124,15 @@ const AUTH_API_F_0014 = function (field, max) {
   };
 };
 
+const AUTH_API_F_0015 = function () {
+  return {
+    code: "AUTH_API-F-0015",
+    level: "error",
+    message: "Not Found",
+    description: "No country found for that code"
+  }
+};
+
 const AUTH_API_T_0001 = function (descriptionError) {
   return {
     code: "AUTH_API-T-0001",
@@ -145,6 +154,6 @@ const AUTH_API_T_0002 = function (descriptionError) {
 module.exports = { 
   AUTH_API_F_0001, AUTH_API_F_0002, AUTH_API_F_0003, AUTH_API_F_0004, AUTH_API_F_0005, AUTH_API_F_0006, 
   AUTH_API_F_0007, AUTH_API_F_0008, AUTH_API_F_0009, AUTH_API_F_0010, AUTH_API_F_0011, AUTH_API_F_0012, 
-  AUTH_API_F_0013, AUTH_API_F_0014,
+  AUTH_API_F_0013, AUTH_API_F_0014, AUTH_API_F_0015,
   AUTH_API_T_0001, AUTH_API_T_0002
 };
