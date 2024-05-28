@@ -98,17 +98,19 @@ const updateUser = async function (id, updateFields) {
         console.log("Created postaladdress with id=" + newPostalAddress._id);
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "A", codeTableOperation: "02", dataNext: generateRegData("02", newPostalAddress) }).save({ session });
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=A and codeTableOperation=02");
+        modifiedCount += Object.keys(updateFieldsPostalAddress).length;
       } else {
         // Update postal address
         verifyFieldsModif(updateFieldsPostalAddress, postalAddressToUpdate);
-        console.log(updateFieldsPostalAddress);
-        const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
-        console.log("Updated postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
-        const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), 
+        if (Object.keys(updateFieldsPostalAddress).length !== 0) {
+          const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
+          console.log("Updated postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
+          const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), 
                                             dataNext: generateRegData("02", updatedPostalAddress) }).save({ session });        
-        console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=02");
-      }
-      modifiedCount += Object.keys(updateFieldsPostalAddress).length;
+          console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=02");
+          modifiedCount += Object.keys(updateFieldsPostalAddress).length;
+        }
+      }      
     }
 
     // Find profile to update, verify modifications and update if needed
