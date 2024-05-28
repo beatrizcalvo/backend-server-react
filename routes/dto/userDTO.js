@@ -8,11 +8,11 @@ const userResponseDTO = (userDB, profileDB) => {
         firstName: profileDB.firstName,
         lastName: profileDB.lastName,
         secondLastName: profileDB.secondLastName,
-        fullName: profileDB.firstName + " " + profileDB.lastName + (!!profileDB.secondLastName ? (" " + profileDB.secondLastName) : ""), 
+        fullName: profileDB.firstName + " " + profileDB.lastName + (profileDB.secondLastName ? (" " + profileDB.secondLastName) : ""), 
       },
       gender: profileDB.gender,
       birthDate: profileDB.birthDate,
-      ...(!!profileDB.firstNationality && {
+      ...(profileDB.firstNationality && {
         firstNationality: {
           code: profileDB.firstNationality.code,
           description: profileDB.firstNationality.description,
@@ -21,9 +21,9 @@ const userResponseDTO = (userDB, profileDB) => {
       })
     },   
     contactPoint: {
-      ...(!!profileDB.postalAddress && {
+      ...(profileDB.postalAddress && {
         postalAddress: {
-          ...((!!profileDB.postalAddress.addressLine1 && !!profileDB.postalAddress.addressLine1) && {
+          ...((profileDB.postalAddress.addressLine1 && profileDB.postalAddress.addressLine1) && {
             addressLines: [ profileDB.postalAddress.addressLine1, profileDB.postalAddress.addressLine2 ]
           }),
           ...(!profileDB.postalAddress.addressLine2 && {
