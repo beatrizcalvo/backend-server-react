@@ -155,9 +155,8 @@ const deleteUser = async function (id) {
     // Delete Profile, PostalAddress & LogsUser
     await Profile.findByIdAndDelete(userDeleted.profileId).session(session).exec();
     console.log("Deleted profile with id=" + userDeleted.profileId);
-    const result = await PostalAddress.deleteOne({ profileId: userDeleted.profileId }).session(session).exec();
-    console.log(result);
-    console.log("Deleted postaladdress with profileId=" + userDeleted.profileId);
+    const resultDeleted = await PostalAddress.deleteOne({ profileId: userDeleted.profileId }).session(session).exec();
+    if (resultDeleted.deletedCount > 0) console.log("Deleted postaladdress with profileId=" + userDeleted.profileId);
     await LogsUser.deleteMany({ userEmail: userDeleted.email }).session(session).exec();
     console.log("Deleted all logsUser with userEmail=" + userDeleted.email);
 
