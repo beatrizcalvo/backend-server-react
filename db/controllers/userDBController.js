@@ -83,7 +83,7 @@ const updateUser = async function (id, updateFields) {
       verifyFieldsModif(updateFieldsUser, userToUpdate);
       if (Object.keys(updateFieldsUser).length !== 0) {
         await User.updateOne({ _id: userToUpdate._id }, updateFieldsUser).session(session);
-        console.log("Update user with id=" + userToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsUser)));
+        console.log("Updated user with id=" + userToUpdate._id + " fields=" + JSON.stringify(Object.keys(updateFieldsUser)));
         modifiedCount += Object.keys(updateFieldsUser).length;
       }
     }
@@ -102,12 +102,14 @@ const updateUser = async function (id, updateFields) {
         // Update postal address
         verifyFieldsModif(updateFieldsPostalAddress, postalAddressToUpdate);
         const updatedPostalAddress = await PostalAddress.findByIdAndUpdate(postalAddressToUpdate._id, updateFieldsPostalAddress, { new: true });
-        console.log("Update postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
+        console.log("Updated postaladdress with id=" + updatedPostalAddress._id + " fields=" + JSON.stringify(Object.keys(updateFieldsPostalAddress)));
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "02", dataPrevious: generateRegData("02", postalAddressToUpdate), 
                                             dataNext: generateRegData("02", updatedPostalAddress) }).save({ session });        
         console.log("Created logsuser with id=" + newLogsUser._id + ", operationType=M and codeTableOperation=02");
       }
+      console.log("OK 1");
       modifiedCount += Object.keys(updateFieldsPostalAddress).length;
+      console.log("OK 2");
     }
 
     // Find profile to update, verify modifications and update if needed
@@ -120,7 +122,7 @@ const updateUser = async function (id, updateFields) {
             { path: "firstNationality", select: "code description", model: Nationality },
             { path: "role", select: "code description", model: Role }
           ]).session(session);
-        console.log("Update profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
+        console.log("Updated profile with id=" + updatedProfile._id + " fields=" + JSON.stringify(Object.keys(updateFieldsProfile)));
         // Save user update in logs
         const newLogsUser = await LogsUser({ userEmail: userToUpdate.email, operationType: "M", codeTableOperation: "01", dataPrevious: generateRegData("01", profileToUpdate), 
                                             dataNext: generateRegData("01", updatedProfile) }).save({ session });
@@ -128,7 +130,7 @@ const updateUser = async function (id, updateFields) {
         modifiedCount += Object.keys(updateFieldsProfile).length;
       }
     }
-console.log("OK");
+
     // Commit the changes
     await session.commitTransaction();
     return { modifiedCount: modifiedCount }; 
