@@ -28,7 +28,11 @@ const userResponseDTO = (userDB, profileDB) => {
             profileDB.postalAddress.addressLine2
           ],
           city: profileDB.postalAddress.city,
-          zipCode: profileDB.postalAddress.zipCode
+          zipCode: profileDB.postalAddress.zipCode,
+          country: {
+            code: profileDB.postalAddress.country.code,
+            description: profileDB.postalAddress.country.description
+          }
         }
       }),
       electronicAddress: {
