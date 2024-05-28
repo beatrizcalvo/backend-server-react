@@ -60,7 +60,7 @@ router.patch("/me", validateRequest(updateSchema), async (req, res, next) => {
       ...(req.body.contactPoint?.postalAddress?.addressLines?.length > 1 && { addressLine2: req.body.contactPoint.postalAddress.addressLines[1] }),
       ...(req.body.contactPoint?.postalAddress?.city && { city: req.body.contactPoint.postalAddress.city }),
       ...(req.body.contactPoint?.postalAddress?.zipCode && { zipCode: req.body.contactPoint.postalAddress.zipCode }),
-      ...(req.body.contactPoint?.postalAddress?.country && { zipCode: req.body.contactPoint.postalAddress.country })
+      ...(req.body.contactPoint?.postalAddress?.country?.code && { country: req.body.contactPoint.postalAddress.country.code })
     };
     const newUserFields = {
       ...(req.body.active && { active: req.body.active }),
