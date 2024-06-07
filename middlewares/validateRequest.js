@@ -7,6 +7,7 @@ const validateRequest = (schema) => function (req, res, next) {
   try {
     // Delete withespaces in all input body fields
     req.body = trimObjValues(req.body);
+    console.log(JSON.stringify(req.body));
 
     // Validate all input body fields
     const result = schema.validate(req.body, { abortEarly: false});
