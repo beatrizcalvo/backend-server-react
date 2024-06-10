@@ -89,7 +89,7 @@ const updateUser = async function (id, updateFields) {
     }
 
     // Find postal address to update, verify modifications and update if needed
-    if (updateFieldsPostalAddress !== undefinded && updateFieldsPostalAddress !== null) {
+    if (updateFieldsPostalAddress !== undefined && updateFieldsPostalAddress !== null) {
       const postalAddressToUpdate = await PostalAddress.findOne({ profileId: userToUpdate.profileId });
       if (postalAddressToUpdate === null) {
         // Insert new postal address
