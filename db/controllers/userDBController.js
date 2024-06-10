@@ -136,6 +136,7 @@ const updateUser = async function (id, updateFields) {
     await session.commitTransaction();
     return { modifiedCount: modifiedCount }; 
   } catch (error) {
+    console.log(error);
     // Rollback any changes made in the database
     console.log("Rollback all changes made in the database");
     await session.abortTransaction();
